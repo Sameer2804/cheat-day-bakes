@@ -25,9 +25,9 @@ export default function DropdownButton({text, options}) {
             transformOrigin: 'top', 
             left: `calc(50% - 120px)`
           }} >
-          <div className="py-2" role="none">
+          <div className="py-1" role="none">
             {options.map((option, index) => (
-                    <a key={index} href="#" className="text-gray-700 block px-4 py-2 text-base" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>{option}</a>
+                    <a key={index} href="#" className="text-gray-700 block px-4 py-2 text-base hover:bg-gray-100" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>{option}</a>
                 ))}
           </div>
         </div>
