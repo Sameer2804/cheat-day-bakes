@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function DessertSquares({text, image}) {
+export default function DessertSquare({text, image}) {
     return(
         <>
             <div className="my-28 relative group">

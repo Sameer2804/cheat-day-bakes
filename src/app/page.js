@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header"
 import Hero from "@/components/layout/Hero"
 import DessertSquare from "@/components/layout/DessertSquare"
+import Promises from "@/components/layout/Promises"
 
 
 export default function Home() {
@@ -14,7 +15,7 @@ export default function Home() {
         <DessertSquare text={'dessert cups'} image={'/DessertCups.png'} />
         <DessertSquare text={'cupcakes'} image={'/Cupcakes.png'} />
       </div>
-
+      <Promises />
     </>
   );
 }

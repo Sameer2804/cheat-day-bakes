@@ -10,9 +10,7 @@ export default function Hero() {
             <div className="absolute inset-0 mx-auto my-16 w-[520px]">
                 <h2 className="font-ovo text-center text-[70px] text-white leading-none tracking-wider">Freshly Baked<br />Temptation</h2>
                 <p className="text-white text-center mt-8 text-lg font-light tracking-widest">Welcome to our sweet sanctuary where every treat is a symphony of flavour, crafted with care and baked to perfection.</p>
-                <Link href={''}>
-                    <button className="bg-white block mx-auto mt-10 font-medium px-8 py-3 hover:bg-gray-200">ORDER NOW</button>
-                </Link>
+                <button className="bg-white block mx-auto mt-10 font-medium px-8 py-3 hover:bg-gray-300">ORDER NOW</button>
             </div>
         </section>
     );
