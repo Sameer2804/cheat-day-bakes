@@ -5,7 +5,7 @@ export default function Hero() {
     return(
         <section className="mt-16 relative">
             <div className="relative w-full h-[480px]">
-                <Image src={"/MainCake.png"} alt={"Cake with cupcakes"} fill style={{objectFit: "cover"}} />
+                <Image src={"/MainCake.png"} alt={"Cake with cupcakes"} fill style={{objectFit: "cover"}} priority={true}/>
             </div>
             <div className="absolute inset-0 mx-auto my-16 w-[520px]">
                 <h2 className="font-ovo text-center text-[70px] text-white leading-none tracking-wider">Freshly Baked<br />Temptation</h2>
