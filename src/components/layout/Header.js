@@ -7,7 +7,7 @@ import DropdownButton from "@/components/common/DropdownButton"
 export default function Header(){
     return (
         <header>
-            <div className="font-ovo text-white bg-primary text-xl py-1.5 text-center">
+            <div className="font-ovo text-white bg-primary text-2xl py-1.5 text-center">
             COLLECTION ONLY
             </div>
             <div className="max-w-4xl mx-auto flex items-center justify-between gap-x-28 mt-12">

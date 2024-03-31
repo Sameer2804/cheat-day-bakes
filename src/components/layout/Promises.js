@@ -5,7 +5,7 @@ import Cogwheel from "@/components/icons/Cogwheel"
 
 export default function Promises(){
     return (
-        <section className="bg-secondary h-[450px] mb-32 pt-8">
+        <section className="bg-secondary h-[450px] mb-32 pt-10">
             <div className="font-ovo text-center text-4xl text-[#403E3E]">
                 OUR PROMISES TO YOU
             </div>

@@ -2,6 +2,7 @@ import Header from "@/components/layout/Header"
 import Hero from "@/components/layout/Hero"
 import DessertSquare from "@/components/layout/DessertSquare"
 import Promises from "@/components/layout/Promises"
+import Footer from "@/components/layout/Footer"
 
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <DessertSquare text={'cupcakes'} image={'/Cupcakes.png'} />
       </div>
       <Promises />
+      <Footer />
     </>
   );
 }
