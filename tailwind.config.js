@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       colors: {
         primary: '#686F59',
-        secondary: '#CED2C5'
+        secondary: '#CED2C5',
+        dark: '#414833'
       },
       fontFamily: {
         'ovo': ['Ovo', 'serif'], // Custom name for Ovo font

@@ -1,23 +1,19 @@
-import Header from "@/components/layout/Header"
 import Hero from "@/components/layout/Hero"
 import DessertSquare from "@/components/layout/DessertSquare"
 import Promises from "@/components/layout/Promises"
-import Footer from "@/components/layout/Footer"
 
 
 export default function Home() {
 
   return (
     <>
-      <Header />
       <Hero />
-      <div className="grid grid-cols-3 max-w-5xl mx-auto gap-x-14">
+      <div className="grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto gap-x-14 px-4 my-24">
         <DessertSquare text={'brownies'} image={'/Brownies.png'} />
         <DessertSquare text={'dessert cups'} image={'/DessertCups.png'} />
         <DessertSquare text={'cupcakes'} image={'/Cupcakes.png'} />
       </div>
       <Promises />
-      <Footer />
     </>
   );
 }

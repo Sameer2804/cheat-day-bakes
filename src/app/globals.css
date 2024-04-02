@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    @apply block w-full mb-4 mt-1;
+    @apply border border-black py-1.5 px-2;
+}
+
+label {
+    @apply font-ovo text-xl;
+}
+
+button[type="submit"], .submit{
+    @apply block w-full bg-primary text-white px-16 py-3;
+}
