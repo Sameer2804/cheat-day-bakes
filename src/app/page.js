@@ -2,7 +2,6 @@ import Hero from "@/components/layout/Hero"
 import DessertSquare from "@/components/layout/DessertSquare"
 import Promises from "@/components/layout/Promises"
 
-
 export default function Home() {
 
   return (

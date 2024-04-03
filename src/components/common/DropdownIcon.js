@@ -1,4 +1,5 @@
 "use client";
+import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function DropdownIcon({text, options}) {
@@ -23,9 +24,18 @@ export default function DropdownIcon({text, options}) {
                 left: `calc(50% - 67px)`
             }} >
           <div className="py-1" role="none">
-            {options.map((option, index) => (
-                    <a key={index} href={`/${option.toLowerCase()}`} className="text-gray-700 block px-4 py-2 text-base hover:bg-gray-100 text-center" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>{option}</a>
-                ))}
+          {
+            options.map((option, index) => (
+              option !== "Logout" ? (
+                <a key={index} href={`/${option.toLowerCase()}`} className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 text-center" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>
+                  {option}
+                </a>
+              ) : 
+              <a key={index} href="#" className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 text-center" role="menuitem" tabIndex="-1" id={`menu-item-${index}`} onClick={() => signOut()}>
+                {option}
+              </a>
+            ))
+          }
           </div>
         </div>
       </div>
