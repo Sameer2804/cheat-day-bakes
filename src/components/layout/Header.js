@@ -9,8 +9,11 @@ import DropdownIcon from "@/components/common/DropdownIcon"
 
 export default function Header() {
     const session = useSession();
+
     console.log(session);
     const status = session.status;
+
+
     return (
         <header>
             <div className="font-ovo text-white bg-primary text-2xl py-1.5 text-center">
@@ -27,13 +30,7 @@ export default function Header() {
                     <Image src={'/title.svg'} alt="Title" fill style={{objectFit:"cover"}} priority={true}/>
                 </div>
                 <div className="flex gap-x-4 justify-center grow basis-0">
-                    {status === 'authenticated' && (
-                        <DropdownIcon text={<Profile className="size-8 mt-px hover:scale-110 transition-transform"/>} options={['Logout']}/>
-
-                    )}
-                    {status == 'unauthenticated' && (
-                        <DropdownIcon text={<Profile className="size-8 mt-px hover:scale-110 transition-transform"/>} options={['Login', 'Register']}/>
-                    )}
+                    <DropdownIcon text={<Profile className="size-8 mt-px hover:scale-110 transition-transform"/>} status={status} />
                     <Link href={''}>
                         <Bag className="size-8 hover:scale-110 transition-transform"/>
                     </Link>

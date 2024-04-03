@@ -1,8 +1,12 @@
 "use client";
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
-export default function DropdownIcon({text, options}) {
+export default function DropdownIcon({text, status}) {
+
+    const router = useRouter()
+
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -10,10 +14,20 @@ export default function DropdownIcon({text, options}) {
       setIsDropdownOpen(boolean);
     };
 
+      const options = status === 'unauthenticated' || status === 'loading' ? [
+          { text: 'Login', href: '/login' },
+          { text: 'Register', href: '/register' },
+          // Add more options as needed
+      ] : [
+          { text: 'My Account', href: '/' },
+          { text: 'Logout', onClick: () => signOut({ callbackUrl: '/login' }) }
+      ];
+
+
     return(
         <div className="relative inline-block" onMouseLeave={() => toggleDropdown(false)}>
         <div>
-        <button type="button" onMouseEnter={() => toggleDropdown(true)} className="inline-flex justify-center gap-x-0.5 hover:underline z-10 pb-2" id="menu-button" aria-expanded={isDropdownOpen} aria-haspopup="true">
+        <button type="button" onClick={() => status === "authenticated" ? router.push("/") : router.push("/login")} onMouseEnter={() => toggleDropdown(true)} className="inline-flex justify-center gap-x-0.5 hover:underline z-10 pb-2" id="menu-button" aria-expanded={isDropdownOpen} aria-haspopup="true">
             {text}
           </button>
         </div>
@@ -24,18 +38,11 @@ export default function DropdownIcon({text, options}) {
                 left: `calc(50% - 67px)`
             }} >
           <div className="py-1" role="none">
-          {
-            options.map((option, index) => (
-              option !== "Logout" ? (
-                <a key={index} href={`/${option.toLowerCase()}`} className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 text-center" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>
-                  {option}
+          {options.map((option, index) => (
+                <a key={index} href={option.href} onClick={option.onClick} className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer" role="menuitem" tabIndex="-1" id={`menu-option-${index}`}>
+                    {option.text}
                 </a>
-              ) : 
-              <a key={index} href="#" className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 text-center" role="menuitem" tabIndex="-1" id={`menu-item-${index}`} onClick={() => signOut()}>
-                {option}
-              </a>
-            ))
-          }
+            ))}
           </div>
         </div>
       </div>

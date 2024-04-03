@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {signIn} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -10,16 +11,22 @@ export default function LoginPage() {
     const [loginInProgress, setLoginInProgress] = useState(false);
     const [incorrectCredentials, setIncorrectCredentials] = useState(false);
 
+    const router = useRouter()
+
+
     async function handleFormSubmit(e) {
         e.preventDefault();
         setIncorrectCredentials(false);
 
-        const result = await signIn('credentials', {redirect: false, email, password});
+        const result = await signIn('credentials', {email, password, redirect: false});
         setLoginInProgress(false);
 
-        if (result?.error) {
+        if(result?.error) {
             setIncorrectCredentials(true);
+        } else {
+            router.push('/');
         }
+
     }
 
     return(

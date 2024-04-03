@@ -1,11 +1,13 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { User } from "@/app/models/User";
 import bcrypt from 'bcrypt';
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "@/libs/mongoConnect";
 
 const handler = NextAuth({
-    secret: process.env.SECRET_KEY,
+    secret: process.env.SECRET,
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -21,10 +23,12 @@ const handler = NextAuth({
                 const credentialsOK = user && bcrypt.compareSync(password, user.password)
 
                 if (credentialsOK) {
+                    console.log(user)
                     return user;
                 }
 
                 return null
+                
             }
         })
     ]
