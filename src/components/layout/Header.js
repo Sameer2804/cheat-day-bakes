@@ -6,12 +6,21 @@ import Bag from "@/components/icons/Bag"
 import Profile from "@/components/icons/Profile"
 import DropdownButton from "@/components/common/DropdownButton"
 import DropdownIcon from "@/components/common/DropdownIcon"
+import { useState, useEffect } from 'react';
+
 
 export default function Header() {
     const session = useSession();
+    const [userName, setUserName] = useState('')
 
     console.log(session);
     const status = session.status;
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            setUserName(session.data.user.email.split('@')[0]);
+        }
+    }, [status, session])
 
 
     return (
@@ -30,6 +39,7 @@ export default function Header() {
                     <Image src={'/title.svg'} alt="Title" fill style={{objectFit:"cover"}} priority={true}/>
                 </div>
                 <div className="flex gap-x-4 justify-center grow basis-0">
+
                     <DropdownIcon text={<Profile className="size-8 mt-px hover:scale-110 transition-transform"/>} status={status} />
                     <Link href={''}>
                         <Bag className="size-8 hover:scale-110 transition-transform"/>

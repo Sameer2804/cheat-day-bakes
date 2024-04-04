@@ -6,7 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import clientPromise from "@/libs/mongoConnect";
 
-const handler = NextAuth({
+export const authOptions = {
     secret: process.env.SECRET,
     providers: [
         CredentialsProvider({
@@ -23,7 +23,6 @@ const handler = NextAuth({
                 const credentialsOK = user && bcrypt.compareSync(password, user.password)
 
                 if (credentialsOK) {
-                    console.log(user)
                     return user;
                 }
 
@@ -32,6 +31,8 @@ const handler = NextAuth({
             }
         })
     ]
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

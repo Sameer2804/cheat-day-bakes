@@ -2,6 +2,9 @@ import { Schema, models, model } from "mongoose";
 import bcrypt from 'bcrypt';
 
 const UserSchema = new Schema({
+    firstName: {type: String},
+    lastName: {type: String},
+    phone: {type: String},
     email: {type: String, required: true, unique: true},
     password: {
         type: String, 
@@ -13,7 +16,8 @@ const UserSchema = new Schema({
             },
             message: `Password must be at least 8 characters long and contain at least one capital letter.`
         }
-    }
+    },
+
 }, {timestamps: true});
 
 UserSchema.post('validate', function(user) {

@@ -4,6 +4,7 @@ import {signIn} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -12,7 +13,6 @@ export default function LoginPage() {
     const [incorrectCredentials, setIncorrectCredentials] = useState(false);
 
     const router = useRouter()
-
 
     async function handleFormSubmit(e) {
         e.preventDefault();
@@ -24,6 +24,7 @@ export default function LoginPage() {
         if(result?.error) {
             setIncorrectCredentials(true);
         } else {
+            toast.success('Login successful')
             router.push('/');
         }
 
@@ -60,14 +61,6 @@ export default function LoginPage() {
                 <div className="mx-auto">
                     <button className="mx-auto mt-8" type="submit" disabled={loginInProgress}>
                         Login
-                    </button>
-                    <div className="text-center my-3 text-gray-500 tracking-widest">
-                        OR
-                    </div>
-                    <button className="w-full mx-auto border border-black py-3.5 flex gap-2 justify-center hover:bg-gray-50" 
-                    type="button" disabled={loginInProgress}>
-                        <Image src={'/Google.svg'} alt="" width={24} height={24}/>
-                        Login with Google
                     </button>
                 </div>
                 <div className='text-center mt-8'>

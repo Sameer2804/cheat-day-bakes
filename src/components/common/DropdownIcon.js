@@ -7,7 +7,6 @@ export default function DropdownIcon({text, status}) {
 
     const router = useRouter()
 
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = (boolean) => {
@@ -19,10 +18,9 @@ export default function DropdownIcon({text, status}) {
           { text: 'Register', href: '/register' },
           // Add more options as needed
       ] : [
-          { text: 'My Account', href: '/' },
+          { text: 'My Account', href: '/my-account/edit-account' },
           { text: 'Logout', onClick: () => signOut({ callbackUrl: '/login' }) }
       ];
-
 
     return(
         <div className="relative inline-block" onMouseLeave={() => toggleDropdown(false)}>

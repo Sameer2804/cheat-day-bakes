@@ -82,14 +82,6 @@ export default function RegisterPage() {
                     <button className="mx-auto mt-8" type="submit" disabled={creatingUser}>
                         Register
                     </button>
-                    <div className="text-center my-3 text-gray-500 tracking-widest">
-                        OR
-                    </div>
-                    <button className="w-full mx-auto border border-black py-3.5 flex gap-2 justify-center hover:bg-gray-50" 
-                    type="button" disabled={creatingUser}>
-                        <Image src={'/Google.svg'} alt="" width={24} height={24}/>
-                        Login with Google
-                    </button>
                 </div>
                 <div className='text-center mt-8'>
                     Already have an account?{' '}<Link href={'/login'}><span className='underline'>Login</span></Link>
