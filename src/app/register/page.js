@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -32,6 +33,7 @@ export default function RegisterPage() {
             setUserCreated(true);
             setEmail("");
             setPassword("");
+            toast.success('Register successful')
         }
         else {
             const data = await response.json();

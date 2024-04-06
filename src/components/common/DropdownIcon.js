@@ -13,7 +13,7 @@ export default function DropdownIcon({text, status}) {
       setIsDropdownOpen(boolean);
     };
 
-      const options = status === 'unauthenticated' || status === 'loading' ? [
+      const options = status === 'unauthenticated' ? [
           { text: 'Login', href: '/login' },
           { text: 'Register', href: '/register' },
           // Add more options as needed
@@ -25,7 +25,7 @@ export default function DropdownIcon({text, status}) {
     return(
         <div className="relative inline-block" onMouseLeave={() => toggleDropdown(false)}>
         <div>
-        <button type="button" onClick={() => status === "authenticated" ? router.push("/") : router.push("/login")} onMouseEnter={() => toggleDropdown(true)} className="inline-flex justify-center gap-x-0.5 hover:underline z-10 pb-2" id="menu-button" aria-expanded={isDropdownOpen} aria-haspopup="true">
+        <button type="button" onClick={() => status === "authenticated" ? router.push("/my-account/edit-account") : router.push("/login")} onMouseEnter={() => toggleDropdown(true)} className="inline-flex justify-center gap-x-0.5 hover:underline z-10 pb-2" id="menu-button" aria-expanded={isDropdownOpen} aria-haspopup="true">
             {text}
           </button>
         </div>

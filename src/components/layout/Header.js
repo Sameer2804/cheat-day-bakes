@@ -1,26 +1,18 @@
 "use client";
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import Link from "next/link";
 import Bag from "@/components/icons/Bag"
 import Profile from "@/components/icons/Profile"
 import DropdownButton from "@/components/common/DropdownButton"
 import DropdownIcon from "@/components/common/DropdownIcon"
-import { useState, useEffect } from 'react';
 
 
 export default function Header() {
     const session = useSession();
-    const [userName, setUserName] = useState('')
 
     console.log(session);
     const status = session.status;
-
-    useEffect(() => {
-        if (status === "authenticated") {
-            setUserName(session.data.user.email.split('@')[0]);
-        }
-    }, [status, session])
 
 
     return (

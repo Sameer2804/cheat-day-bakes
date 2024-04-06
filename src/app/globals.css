@@ -21,8 +21,13 @@ label {
     @apply font-ovo text-xl;
 }
 
+button[type="submit"].create-btn {
+    @apply block w-full bg-primary text-white px-8 py-[0.65rem];
+}
+
+
 button[type="submit"], .submit{
-    @apply block w-full bg-primary text-white px-16 py-3.5;
+    @apply block w-full bg-primary text-white px-8 py-3.5;
 }
 
 button[type="submit"]:disabled, .submit:disabled{
@@ -31,4 +36,12 @@ button[type="submit"]:disabled, .submit:disabled{
 
 button[type="button"]:disabled, button[type="button"]:disabled:hover{
     @apply bg-gray-200 cursor-wait;
+}
+
+.tabs > *.active {
+    @apply font-medium;
+}
+
+.tabs {
+    @apply text-[1.08rem] border-l border-thinGray font-light pl-2.5;
 }
