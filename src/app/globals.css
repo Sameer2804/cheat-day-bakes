@@ -5,7 +5,8 @@
 input[type="email"],
 input[type="password"],
 input[type="text"],
-input[type="tel"] {
+input[type="tel"],
+textarea[type="text"] {
     @apply block w-full mb-4 mt-1;
     @apply border border-black py-2 px-2;
 }
@@ -17,7 +18,8 @@ input[type="tel"]:disabled {
     @apply bg-gray-300 text-gray-900 cursor-not-allowed;
 }
 
-label {
+
+label[for] {
     @apply font-ovo text-xl;
 }
 
@@ -39,7 +41,7 @@ button[type="button"]:disabled, button[type="button"]:disabled:hover{
 }
 
 .tabs > *.active {
-    @apply font-medium;
+    @apply font-medium flex;
 }
 
 .tabs {

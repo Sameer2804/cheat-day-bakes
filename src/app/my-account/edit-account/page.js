@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import UserTabs from "@/components/layout/UserTabs"
 
 
-
 export default function MyAccountPage() {
 
     const session = useSession();

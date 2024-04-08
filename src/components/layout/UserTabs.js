@@ -2,6 +2,7 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import AdminIcon from "@/components/common/AdminIcon"
 
 export default function UserTabs({isAdmin}) {
     const path = usePathname();
@@ -25,15 +26,26 @@ export default function UserTabs({isAdmin}) {
 
                 {isAdmin && (
                     <>
-                        <Link 
+                        <Link
                             href={'/my-account/categories'}
                             className={path === '/my-account/categories' ? 'active' : ''}
                             >
                             Categories
+                            <AdminIcon />
                         </Link>
-                        <Link href={''}>Menu Items</Link>
-                        <Link href={''}>All Users</Link>
-                        <Link href={''}>All Orders</Link>
+                        <Link 
+                            href={'/my-account/menu-items'}
+                            className={path.includes('menu-items') ? 'active' : ''}
+                            >
+                            Menu Items
+                            <AdminIcon />
+                        </Link>
+                        <Link href={''}
+                            className={path === '/my-account/all-orders' ? 'active' : ''}
+                        >
+                            All Orders
+                            <AdminIcon />
+                        </Link>
                     </>
                 )}
                 <Link 

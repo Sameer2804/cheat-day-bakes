@@ -3,6 +3,7 @@ import UserTabs from "@/components/layout/UserTabs"
 import { useEffect, useState } from "react";
 import { useProfile } from "@/components/UseProfile"
 import toast from 'react-hot-toast';
+import Cross from "@/components/icons/Cross"
 
 export default function CategoriesPage() {
     
@@ -69,7 +70,13 @@ export default function CategoriesPage() {
                       <label htmlFor="category">
                         {editedCategory ? 'Update category' : 'New category name'}
                         {editedCategory && (
-                          <>: <b>{editedCategory.name}</b></>
+                          <div className="inline-flex items-center">
+                          :<b className="ml-1.5 mr-1">{editedCategory.name}</b>
+                            <Cross onClick={() => {
+                              setCategoryName('');
+                              setEditedCategory(null);
+                            }} />
+                          </div>
                         )}
                       </label>
                       <input type="text" id="category"
