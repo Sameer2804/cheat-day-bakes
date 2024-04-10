@@ -35,14 +35,16 @@ export default function MenuItemsPage() {
                     <div>Add New Menu Item</div>
                     <Right />
                 </Link>
-                <div className="grid grid-cols-3 gap-x-6 text-center font-light tracking-wider">
+                <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-5 font-light tracking-wider">
                     {menuItems?.length > 0 && menuItems.map(item => (
-                        <Link href={'/my-account/menu-items/edit/'+item._id}>
-                            <div className="mb-2">
-                                <Image src={item.images[0]} width={250} height={250} />
-                            </div>
-                            <div className="capitalize">{item.name}</div>
-                        </Link>
+                        <div className="mx-auto">
+                            <Link href={'/my-account/menu-items/edit/'+item._id}>
+                                <div className="mb-2.5">
+                                    <Image src={item.images[0]} width={250} height={250} />
+                                </div>
+                                <div className="capitalize text-center">{item.name}</div>
+                            </Link>
+                        </div>
                     ))}
                 </div>
                 

@@ -19,7 +19,7 @@ input[type="tel"]:disabled {
 }
 
 
-label[for] {
+form > div> label[for] {
     @apply font-ovo text-xl;
 }
 

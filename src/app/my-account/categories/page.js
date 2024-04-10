@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useProfile } from "@/components/UseProfile"
 import toast from 'react-hot-toast';
 import Cross from "@/components/icons/Cross"
+import DeleteDialog from "@/components/common/DeleteDialog"
 
 export default function CategoriesPage() {
     
@@ -12,10 +13,18 @@ export default function CategoriesPage() {
     const [categoryName, setCategoryName] = useState('')
     const [categories, setCategories] = useState([]);
     const [editedCategory, setEditedCategory] = useState(null);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [deleteCategoryID, setDeleteCategoryID] = useState('');
 
     useEffect(() => {
       fetchCategories();
     }, [])
+
+    useEffect(() => {
+      if(!showDeleteDialog) {
+        setDeleteCategoryID('')
+      }
+    }, [showDeleteDialog])
 
     function fetchCategories() {
       fetch('/api/categories').then(response => {
@@ -51,6 +60,28 @@ export default function CategoriesPage() {
           error: 'An error has occured',
         });
       }
+
+    async function handleCategoryDelete(_id) {
+      const promise = new Promise(async (resolve, reject) => {
+        const response = await fetch('/api/categories?_id='+_id, {
+          method: 'DELETE'
+        });
+        if (response.ok) {
+          resolve();
+        }
+        else{
+          reject();
+        }
+      });
+
+      await toast.promise(promise, {
+        loading: 'Deleting...',
+        success: 'Deleted',
+        error: 'Error, cannot delete this category'
+      })
+
+      fetchCategories();
+    }
 
     if(profileLoading) {
         return 'Loading info...';
@@ -91,8 +122,15 @@ export default function CategoriesPage() {
               <div className="max-w-2xl mx-auto lg:mx-0 lg:col-span-3">
                 <div className="text-xs mt-10 lg:mt-5 pb-1 font-light tracking-widest border-b border-thinGray">EXISTING CATEGORIES</div>
                 <div>
+                  <DeleteDialog 
+                    open={showDeleteDialog} 
+                    setOpen={setShowDeleteDialog} 
+                    onDelete={() => handleCategoryDelete(deleteCategoryID)} 
+                    title={'Delete category'} 
+                    text={'Are you sure you want to delete this category? This action cannot be undone.'}/>
                   {categories?.length > 0 && categories.map(category => (
                     <div className="flex py-5 border-b border-thinGray items-center">
+                    
                       <div className="font-ovo text-2xl mr-auto">{category.name}</div>
                       <button 
                       className="text-[0.9rem] bg-primary text-white px-8 py-2 rounded-lg hover:bg-dark" 
@@ -102,7 +140,10 @@ export default function CategoriesPage() {
                         }}>
                         Edit
                       </button>
-                      <button className="ml-5 text-[0.9rem] text-primary border border-primary px-6 py-2 rounded-lg hover:bg-secondary">
+                      <button 
+                      className="ml-5 text-[0.9rem] text-primary border border-primary px-6 py-2 rounded-lg hover:bg-secondary"
+                      onClick={() => {setDeleteCategoryID(category._id); setShowDeleteDialog(true)}}
+                      >
                         Delete
                       </button>
                     </div>
