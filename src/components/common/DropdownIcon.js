@@ -13,14 +13,16 @@ export default function DropdownIcon({text, status}) {
       setIsDropdownOpen(boolean);
     };
 
-      const options = status === 'unauthenticated' ? [
-          { text: 'Login', href: '/login' },
-          { text: 'Register', href: '/register' },
-          // Add more options as needed
-      ] : [
-          { text: 'My Account', href: '/my-account/edit-account' },
-          { text: 'Logout', onClick: () => signOut({ callbackUrl: '/login' }) }
-      ];
+    const options = status === 'unauthenticated' ? [
+      { text: 'Login', href: '/login' },
+      { text: 'Register', href: '/register' },
+    ] : status === 'loading' ? [
+        {}
+    ] : [
+        { text: 'My Account', href: '/my-account/edit-account' },
+        { text: 'Logout', onClick: () => signOut({ callbackUrl: '/login' }) }
+        // Add more options for authenticated users as needed
+    ];
 
     return(
         <div className="relative inline-block" onMouseLeave={() => toggleDropdown(false)}>

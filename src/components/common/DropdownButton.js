@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import Link from "next/link";
 
 export default function DropdownButton({text, options}) {
 
@@ -27,7 +28,7 @@ export default function DropdownButton({text, options}) {
           }} >
           <div className="py-1" role="none">
             {options.map((option, index) => (
-                    <a key={index} href="#" className="text-gray-700 block px-4 py-2 text-base hover:bg-gray-100" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>{option}</a>
+                    <Link key={index} href={"/product-list/"+option._id} className="text-gray-700 block px-4 py-2 text-base hover:bg-gray-100" role="menuitem" tabIndex="-1" id={`menu-item-${index}`}>{option.name}</Link>
                 ))}
           </div>
         </div>

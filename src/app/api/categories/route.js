@@ -1,4 +1,6 @@
 import { Category } from "@/app/models/Category";
+import { MenuItem } from "@/app/models/MenuItem";
+
 import mongoose from "mongoose";
 
 export async function POST(req) {
@@ -15,8 +17,15 @@ export async function PUT(req) {
     return Response.json(true);
 }
 
-export async function GET() {
+export async function GET(req) {
     mongoose.connect(process.env.MONGO_URL);
+    const url = new URL(req.url);
+    const categoryInUse = url.searchParams.get('findCategoryInUse');
+    if(categoryInUse) {
+        const distinctCategoryIds = await MenuItem.distinct('category');
+        const categories = await Category.find({ _id: { $in: distinctCategoryIds } });
+        return Response.json(categories);
+    }
     return Response.json(
         await Category.find()
     )
@@ -31,6 +40,11 @@ export async function DELETE(req) {
     if (forbiddenCategoriesToDelete.includes(_id)) {
         // If it is, return an error response or handle it as needed
         return Response.json({ error: 'Cannot delete this category' }, { status: 403 });
+    }
+
+    const menuItemExists = await MenuItem.exists({ category: _id });
+    if (menuItemExists) {
+        return Response.json({ error: 'Cannot delete this category as it is associated with menu items' }, { status: 400 });
     }
     
     await Category.deleteOne({_id})

@@ -57,7 +57,7 @@ export default function NewMenuItemsPage() {
     }
 
     return (
-        <section className="max-w-5xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
+        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
             <UserTabs isAdmin={true} />
             <div className="lg:mx-0 lg:col-span-3">
                 <Link href={'/my-account/menu-items'} className="items-center mb-8 gap-x-2 border border-black flex rounded-xl py-2 justify-center hover:bg-gray-200 hover:cursor-pointer">

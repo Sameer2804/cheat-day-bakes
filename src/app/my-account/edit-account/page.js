@@ -69,7 +69,7 @@ export default function MyAccountPage() {
     }
 
     return (
-        <section className="max-w-5xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
+        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
             <UserTabs isAdmin={isAdmin} />
             <form className="max-w-2xl mx-auto lg:mx-0 lg:col-span-3" onSubmit={handleFormSubmit}>
                 <div>

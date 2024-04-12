@@ -39,14 +39,17 @@ export default function EditableImage({link, setLink}) {
     <>
     <label className="cursor-pointer normal-font">
       {link && (
-        <div className="flex flex-col items-center">
-            <Image src={link} alt="menu item" width={250} height={250}/>
-            <span className="mt-1">Change image</span>
+        <div>
+          <div className="relative mx-auto lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80">
+              <Image src={link} alt="menu item" layout="fill"/>
+          </div>
+          <div className="mt-2 text-center">Change image</div>
         </div>
+
 
     )}
       {!link && (
-        <div className="bg-gray-200 h-[220px] border border-black flex flex-col justify-center items-center gap-y-1.5">
+        <div className="bg-gray-200 border border-black flex flex-col justify-center items-center gap-y-1.5 lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80">
             <Plus />
             <div className="font-light">Add Image</div>
         </div>

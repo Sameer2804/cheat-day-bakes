@@ -77,7 +77,7 @@ export default function CategoriesPage() {
       await toast.promise(promise, {
         loading: 'Deleting...',
         success: 'Deleted',
-        error: 'Error, cannot delete this category'
+        error: 'Error, cannot delete this category, check it does not belong to any items'
       })
 
       fetchCategories();
@@ -93,7 +93,7 @@ export default function CategoriesPage() {
 
 
     return(
-        <section className="max-w-5xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
+        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
             <UserTabs isAdmin={true} />
             <div className="lg:mx-0 lg:col-span-3 ">
               <form className="max-w-2xl mx-auto lg:mx-0 lg:col-span-3 lg:flex gap-x-5" onSubmit={handleCategorySubmit}>

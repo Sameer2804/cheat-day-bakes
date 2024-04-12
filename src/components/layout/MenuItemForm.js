@@ -2,7 +2,7 @@
 import EditableImage from "@/components/layout/EditableImage"
 import MenuItemPriceProp from "@/components/layout/MenuItemPriceProp"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function MenuItemForm({onSubmit, menuItem}) {
 
@@ -13,16 +13,35 @@ export default function MenuItemForm({onSubmit, menuItem}) {
     const [sizes, setSizes] = useState(menuItem?.sizes || []);
     const [toppings, setToppings] = useState(menuItem?.toppings || []);
     const [giftBoxOption, setGiftBoxOption] = useState(menuItem?.giftBoxOption || false);
+    const [category, setCategory] = useState(menuItem?.category || '');
+    const [categories, setCategories] = useState([]);
 
+ 
+    useEffect(() => {
+        fetch('/api/categories').then(response => {
+            response.json().then(categories => {
+                setCategories(['', ...categories]);
+            });
+        });
+    }, [])
+
+    useEffect(() => {
+        const textarea = document.getElementById('description');
+        if (textarea) {
+          textarea.style.height = 'auto'; // Reset the height to auto to avoid scrollbars
+          textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to fit the content
+        }
+      }, []); // Empty dependency array ensures this effect runs only once after the initial render
+    
 
     return (
         <form 
         onSubmit={ e => 
-            onSubmit(e, {images, name, description, basePrice, sizes, toppings, giftBoxOption})}
+            onSubmit(e, {images, name, description, basePrice, category, sizes, toppings, giftBoxOption})}
         >
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-6  mb-8">
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-y-6 mb-8">
                 {images.map((image, index) => (
-                    <div key={index} className="max-w-[220px] min-w-[220px] mx-auto">
+                    <div key={index} className="min-w-[220px] mx-auto">
                         <EditableImage
                             link={image}
                             setLink={newImage =>
@@ -47,8 +66,16 @@ export default function MenuItemForm({onSubmit, menuItem}) {
                 value={basePrice} onChange={e => setBasePrice(e.target.value)} required/>
             </div>
             <div>
+                <label htmlFor="category">Category</label>
+                <select id="category" value={category} onChange={e => setCategory(e.target.value)} required>
+                    {categories?.length > 0 && categories.map(category => (
+                        <option value={category._id}>{category.name}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
                 <label htmlFor="description">Description</label>
-                <textarea type="text" id="description" className="h-28"
+                <textarea type="text" id="description"
                 value={description} onChange={e => setDescription(e.target.value)} required/>
             </div>
             <div className="mb-4">

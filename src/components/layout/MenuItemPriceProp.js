@@ -88,7 +88,7 @@ export default function MenuItemPriceProp({children, props, setProps}) {
                     <div className='flex justify-center'>
                     <button 
                        onClick={() => { addProp(); toggleBtnClick() }}
-                       className='border grow border-primary px-12 mx-5 text-primary py-2.5 rounded-md hover:bg-secondary mt-2 mb-2' type='button'>
+                       className='grow bg-light text-white px-12 mx-5 py-2.5 rounded-md hover:bg-primary mt-2 mb-2' type='button'>
                         Add Row
                         </button>
                     </div>
