@@ -9,6 +9,7 @@ export default function MenuItemForm({onSubmit, menuItem}) {
     let [images, setImages] = useState([...(menuItem?.images || []), ...Array(3).fill('')].slice(0, 3)); 
     const [name, setName] = useState(menuItem?.name || '');
     const [description, setDescription] = useState(menuItem?.description || '');
+    const [ingredients, setIngredients] = useState(menuItem?.ingredients || '');
     const [basePrice, setBasePrice] = useState(menuItem?.basePrice || '');
     const [sizes, setSizes] = useState(menuItem?.sizes || []);
     const [toppings, setToppings] = useState(menuItem?.toppings || []);
@@ -26,18 +27,30 @@ export default function MenuItemForm({onSubmit, menuItem}) {
     }, [])
 
     useEffect(() => {
-        const textarea = document.getElementById('description');
-        if (textarea) {
-          textarea.style.height = 'auto'; // Reset the height to auto to avoid scrollbars
-          textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to fit the content
-        }
+        // IDs of the textarea elements you want to adjust
+        const textareaIDs = ['description', 'ingredients'];
+      
+        // Function to adjust the height of a textarea
+        const adjustHeight = (textarea) => {
+          if (textarea) {
+            textarea.style.height = 'auto'; // Reset the height to auto to avoid scrollbars
+            textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to fit the content
+          }
+        };
+      
+        // Loop through each ID and apply the height adjustment
+        textareaIDs.forEach(id => {
+          const textarea = document.getElementById(id);
+          adjustHeight(textarea);
+        });
+      
       }, []); // Empty dependency array ensures this effect runs only once after the initial render
     
 
     return (
         <form 
         onSubmit={ e => 
-            onSubmit(e, {images, name, description, basePrice, category, sizes, toppings, giftBoxOption})}
+            onSubmit(e, {images, name, description, ingredients, basePrice, category, sizes, toppings, giftBoxOption})}
         >
             <div className="grid md:grid-cols-3 grid-cols-1 gap-y-6 mb-8">
                 {images.map((image, index) => (
@@ -77,6 +90,11 @@ export default function MenuItemForm({onSubmit, menuItem}) {
                 <label htmlFor="description">Description</label>
                 <textarea type="text" id="description"
                 value={description} onChange={e => setDescription(e.target.value)} required/>
+            </div>
+            <div>
+                <label htmlFor="ingredients">Ingredients <span>(List each ingredient seperated with commas)</span></label>
+                <textarea type="text" id="ingredients"
+                value={ingredients} onChange={e => setIngredients(e.target.value)} required/>
             </div>
             <div className="mb-4">
                 <MenuItemPriceProp props={sizes} setProps={setSizes}>Sizes</MenuItemPriceProp>

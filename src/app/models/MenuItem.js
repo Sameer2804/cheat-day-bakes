@@ -11,6 +11,7 @@ const MenuItemSchema = new Schema({
     description: {type: String},
     basePrice: {type: Number},
     category: {type: mongoose.Types.ObjectId},
+    ingredients: {type: String},
     sizes: {type: [ExtraPriceSchema]},
     toppings: {type: [ExtraPriceSchema]},
     giftBoxOption: {type: Boolean}

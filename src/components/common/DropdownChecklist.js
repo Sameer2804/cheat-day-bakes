@@ -54,7 +54,7 @@ export default function DropdownChecklist({ items, selectedToppings, setSelected
                             onChange={() => handleCheck(topping)}
                         />
                         {topping.name}
-                        <span className='ml-auto text-sm font-light'>{`+£${topping.price.toFixed(2)}`}</span>
+                        <span className='ml-2 text-sm font-light'>{topping.price > 0 ? `+£${topping.price.toFixed(2)}` : ""}</span>
                     </label>
                 ))}
             </div>

@@ -38,10 +38,10 @@ export default function ProductListPage() {
                             </div>
                             <div className="capitalize text-center mt-3 text-sm sm:text-base">{item.name}</div>
                             <div className="capitalize text-center mt-1 text-sm sm:text-base">
-                                {(item.sizes?.length > 0 || item.toppings.length > 0) && (
+                                {(item.sizes?.length > 0) && (
                                     <span className='text-sm'>From{' '}</span>
                                 )}
-                                {`£${item.basePrice.toFixed(2)}`}
+                                {`£${(item.basePrice + (item?.sizes.length > 0 ? item?.sizes[0]?.price : 0)).toFixed(2)}`}
                             </div>
                         </Link>
                     </div>

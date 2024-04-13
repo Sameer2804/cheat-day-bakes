@@ -6,6 +6,10 @@ import Link from "next/link";
 import { CartContext } from '@/components/AppContext';
 import DropdownChecklist from "@/components/common/DropdownChecklist"
 import toast from 'react-hot-toast';
+import Bowl from "@/components/icons/Bowl"
+import ReturnBasket from "@/components/icons/ReturnBasket"
+import ExtraItemInfo from "@/components/common/ExtraItemInfo"
+
 
 export default function ProductPage() {
 
@@ -16,7 +20,9 @@ export default function ProductPage() {
     const {addToCart} = useContext(CartContext)
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedToppings, setSelectedToppings] = useState([]);
+    const [selectedToppingsError, setSelectedToppingsError] = useState(false);
     const [giftBoxOptionChecked, setGiftBoxOptionChecked] = useState(false);
+
     
     useEffect(() => {
         fetch('/api/menu-items').then(res => {
@@ -46,12 +52,18 @@ export default function ProductPage() {
     };
 
     function handleAddToCart() {
-        if(item && selectedSize && selectedToppings.length > 0) {
+        setSelectedToppingsError(false);
+        const hasSizeBeenChosen = item?.sizes.length > 0 ? selectedSize : true;
+        const hasToppingBeenChosen = item?.toppings.length > 0 ? selectedToppings.length > 0 : true;
+        const meetRequirements = hasSizeBeenChosen && hasToppingBeenChosen;
+        if(item && (meetRequirements)) {
             addToCart(item, selectedSize, selectedToppings, giftBoxOptionChecked);
             toast.success('Added to cart!')
         }
         else{
-            toast.error('Please check all required options are filled')
+            if(!hasToppingBeenChosen) {
+                setSelectedToppingsError(true);
+            }
         }
     }
 
@@ -111,12 +123,15 @@ export default function ProductPage() {
                     <div>
                         <div className='mt-5'>
                             <div className='text-sm tracking-wider mb-1 font-light mt-4'>Toppings (Select up to 4)</div>
-                            <DropdownChecklist 
-                                items={item} 
-                                selectedToppings={selectedToppings} 
+                            <DropdownChecklist
+                                items={item}
+                                selectedToppings={selectedToppings}
                                 setSelectedToppings={setSelectedToppings} />
                         </div>
                     </div>
+                )}
+                {selectedToppingsError && (
+                    <div className={'text-red-600 text-sm mt-1'}>*Please select at least one topping</div>
                 )}
 
                 {item?.giftBoxOption === true && (
@@ -134,6 +149,20 @@ export default function ProductPage() {
                 <button className="w-full mt-3 bg-primary text-white px-8 py-3.5">
                     Buy it now
                 </button>
+                <div className='mt-6 border-t border-gray-300'>
+                    <ExtraItemInfo 
+                        icon={<Bowl />} 
+                        title={'Ingredients'} 
+                        text={item?.ingredients} />
+                </div>
+                <div>
+                    <ExtraItemInfo 
+                        icon={<ReturnBasket />} 
+                        title={'Return Policy'} 
+                        text={'This is the return policy'} />
+                </div>
+
+
             </div>
         </section>
     )
