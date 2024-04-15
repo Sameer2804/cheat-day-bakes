@@ -46,12 +46,13 @@ export default function DropdownChecklist({ items, selectedToppings, setSelected
                 style={{ transitionProperty: 'max-height', transitionDuration: '500ms'}}
             >
                 {items?.toppings?.map((topping, index) => (
-                    <label key={index} className="flex items-center px-2 py-1">
+                    <label key={index} className={`flex items-center px-2 py-1 select-none ${!selectedToppings.includes(topping) && selectedToppings.length >= 4 ? 'text-gray-400 font-light' : ''}`}>
                         <input
                             type="checkbox"
                             className="mr-2"
                             checked={selectedToppings.includes(topping)}
                             onChange={() => handleCheck(topping)}
+                            disabled={!selectedToppings.includes(topping) && selectedToppings.length >= 4}
                         />
                         {topping.name}
                         <span className='ml-2 text-sm font-light'>{topping.price > 0 ? `+£${topping.price.toFixed(2)}` : ""}</span>

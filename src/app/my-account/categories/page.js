@@ -103,10 +103,12 @@ export default function CategoriesPage() {
                         {editedCategory && (
                           <div className="inline-flex items-center">
                           :<b className="ml-1.5 mr-1">{editedCategory.name}</b>
-                            <Cross onClick={() => {
-                              setCategoryName('');
-                              setEditedCategory(null);
-                            }} />
+                            <div className="-mb-2">
+                              <Cross onClick={() => {
+                                setCategoryName('');
+                                setEditedCategory(null);
+                              }} />
+                            </div>
                           </div>
                         )}
                       </label>

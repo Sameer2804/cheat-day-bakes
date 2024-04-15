@@ -1,9 +1,9 @@
 "use client";
 import { useState } from 'react';
-import {signIn} from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
@@ -11,11 +11,26 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [loginInProgress, setLoginInProgress] = useState(false);
     const [incorrectCredentials, setIncorrectCredentials] = useState(false);
+    const [loginComplete, setLoginComplete] = useState(false);
 
-    const router = useRouter()
+    const session = useSession();
+    const status = session.status;
+
+    if(status === 'loading') {
+        return 'Loading...'
+    }
+    
+    if(loginComplete) {
+        return redirect('/')
+    }
+
+    if(status === 'authenticated') {
+        return redirect('/my-account/edit-account')
+    }
 
     async function handleFormSubmit(e) {
         e.preventDefault();
+        setLoginComplete(false);
         setIncorrectCredentials(false);
 
         const result = await signIn('credentials', {email, password, redirect: false});
@@ -25,7 +40,7 @@ export default function LoginPage() {
             setIncorrectCredentials(true);
         } else {
             toast.success('Login successful')
-            router.push('/');
+            setLoginComplete(true);
         }
 
     }

@@ -54,7 +54,7 @@ export default function Footer() {
                     <div className="flex gap-x-3 ml-auto items-center">
                         <a href=""><Facebook /></a>
                         <a href="https://www.instagram.com/cheatday.bakes/?hl=en-gb" target="_blank"><Instagram /></a>
-                        <a href="https://www.tiktok.com/@cheatday.bakes?lang=en"><Tiktok /></a>
+                        <a href="https://www.tiktok.com/@cheatday.bakes?lang=en" target="_blank"><Tiktok /></a>
                     </div>
                 </div>
             </div>

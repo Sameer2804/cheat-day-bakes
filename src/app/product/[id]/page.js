@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import Bowl from "@/components/icons/Bowl"
 import ReturnBasket from "@/components/icons/ReturnBasket"
 import ExtraItemInfo from "@/components/common/ExtraItemInfo"
+import QuantityButton from "@/components/layout/QuantityButton"
 
 
 export default function ProductPage() {
@@ -22,6 +23,7 @@ export default function ProductPage() {
     const [selectedToppings, setSelectedToppings] = useState([]);
     const [selectedToppingsError, setSelectedToppingsError] = useState(false);
     const [giftBoxOptionChecked, setGiftBoxOptionChecked] = useState(false);
+    const [quantity, setQuantity] = useState(1);
 
     
     useEffect(() => {
@@ -57,7 +59,7 @@ export default function ProductPage() {
         const hasToppingBeenChosen = item?.toppings.length > 0 ? selectedToppings.length > 0 : true;
         const meetRequirements = hasSizeBeenChosen && hasToppingBeenChosen;
         if(item && (meetRequirements)) {
-            addToCart(item, selectedSize, selectedToppings, giftBoxOptionChecked);
+            addToCart(item, selectedSize, selectedToppings, giftBoxOptionChecked, quantity);
             toast.success('Added to cart!')
         }
         else{
@@ -67,35 +69,35 @@ export default function ProductPage() {
         }
     }
 
-    let totalPrice = item?.basePrice;
+    let totalPrice = item?.basePrice * quantity;
     if(selectedSize) {
         totalPrice += selectedSize.price
     }
     if (selectedToppings?.length > 0) {
         for (const topping of selectedToppings) {
-            totalPrice += topping.price;
+            totalPrice += topping.price * quantity;
         }
     }
     if(giftBoxOptionChecked) {
-        totalPrice += 1.5
+        totalPrice += 1.5 * quantity;
     }
 
 
     return(
-        <section className='max-w-4xl mx-auto w-full mt-8 mb-28 grid md:grid-cols-2 grid-cols-1'>
-            <div className='flex flex-col'>
-                <Image src={selectedImage} width={400} height={400} />
-                <div className='flex mt-6 gap-x-4'>
+        <section className='max-w-6xl mx-auto w-full mt-8 mb-28 grid md:grid-cols-2 grid-cols-1 gap-x-4'>
+            <div className='flex flex-col mx-auto'>
+                <Image src={selectedImage} width={520} height={520} />
+                <div className='flex mt-7 gap-x-4'>
                     {item?.images.map((image, index) => (
                         <div className={selectedImage === image ? 'border-4 border-dark cursor-pointer' : 'cursor-pointer'}>
-                            <Image key={index} src={image} width={120} height={120} onClick={() => setSelectedImage(item?.images[index])}/>
+                            <Image key={index} src={image} width={160} height={160} onClick={() => setSelectedImage(item?.images[index])}/>
                         </div>
                     ))}
                 </div>
             </div>
             <div>
                 <div className='text-sm tracking-wider mb-1 font-light'>CHEAT DAY BAKES</div>
-                <div className='mb-3 text-4xl font-ovo capitalize'>{item?.name}</div>
+                <div className='mb-4 text-4xl capitalize'>{item?.name}</div>
                 <div className='mb-3 text-xl font-light'>{`£${(item?.basePrice + (selectedSize?.price || 0)).toFixed(2)}`}</div>
                 <div className='text-sm font-light tracking-widest leading-5'>{formatDescription(item?.description)}</div>
                 {item?.sizes?.length > 0 && (
@@ -104,7 +106,7 @@ export default function ProductPage() {
                         <div className='flex gap-x-3'>
                             {item?.sizes?.map((size, index) => (
                                 <div className='mt-2.5'>
-                                    <label className={`border rounded-2xl px-6 py-1.5 ${selectedSize === size ? 'border-black bg-black text-white cursor-pointer' : 'border-black cursor-pointer'}`}>
+                                    <label className={`border rounded-2xl px-6 py-1.5 select-none ${selectedSize === size ? 'border-black bg-black text-white cursor-pointer' : 'border-black cursor-pointer'}`}>
                                         <input 
                                             type='radio' 
                                             name='size' 
@@ -122,7 +124,7 @@ export default function ProductPage() {
                 {item?.toppings?.length > 0 && (
                     <div>
                         <div className='mt-5'>
-                            <div className='text-sm tracking-wider mb-1 font-light mt-4'>Toppings (Select up to 4)</div>
+                            <div className='text-sm tracking-wider mb-1 font-light mt-4'>Toppings (Select up to 4)*</div>
                             <DropdownChecklist
                                 items={item}
                                 selectedToppings={selectedToppings}
@@ -134,17 +136,24 @@ export default function ProductPage() {
                     <div className={'text-red-600 text-sm mt-1'}>*Please select at least one topping</div>
                 )}
 
+                <div>
+                    <div className='text-sm tracking-wider mb-1 font-light mt-4'>Quantity</div>
+                    <div className='h-12 w-32'>
+                        <QuantityButton quantity={quantity} setQuantity={setQuantity} />
+                    </div>
+                </div>
+
                 {item?.giftBoxOption === true && (
-                    <label className='mt-4 items-center flex' htmlFor='giftBox'>
+                    <label className='mt-6 items-center flex' htmlFor='giftBox'>
                         <input type='checkbox' id='giftBox' checked={giftBoxOptionChecked} onChange={() => setGiftBoxOptionChecked(!giftBoxOptionChecked)} />
-                        <div className='ml-1.5 text-sm'>Transparent giftbox? +£1.50</div>
+                        <div className='ml-1.5 text-sm'>Transparent giftbox? +£{(1.50 * quantity).toFixed(2)}</div>
                     </label>
                 )}
 
                 <button 
                     onClick={handleAddToCart}
                     className="w-full mt-8 border border-black px-8 py-3.5">
-                    Add to cart {`£${totalPrice?.toFixed(2)}`}
+                    Add to cart {`£${(totalPrice).toFixed(2)}`}
                 </button>
                 <button className="w-full mt-3 bg-primary text-white px-8 py-3.5">
                     Buy it now
@@ -158,11 +167,28 @@ export default function ProductPage() {
                 <div>
                     <ExtraItemInfo 
                         icon={<ReturnBasket />} 
-                        title={'Return Policy'} 
-                        text={'This is the return policy'} />
+                        title={'Refund Policy'}
+                        text={
+                            <div>
+                                <p>
+                                    As a company policy, we do not offer full refunds for our bakes unless there is an issue where we are found to be at fault.
+                                </p>
+                                <br />
+                                <p>
+                                    If you are unsatisfied with your bake, please get in touch with a member of management through <a className='underline text-primary' href="mailto:cheatdaybakes@gmail.com">cheatdaybakes@gmail.com</a> within 24 hours of your collected bake with the reasons why you are unsatisfied and any photographic evidence of issues with the bake. It is then at our discretion whether you are offered a percentage from your next order, money back, or store credit to be used against a future purchase with us. As taste and texture are subjective, we would not offer credit, money back, or a percentage off for these as reasons.
+                                </p>
+                                <br />
+                                <p>
+                                    If you collect your bake from us, we cannot be held liable for any damages to the cake or products once they have left our premises. When you collect a bake, please ensure that your vehicle has a flat surface and is clean and tidy. Our cakes can be very fragile, so we advise to drive slowly and ensure that your cake cannot move around in the vehicle.
+                                </p>
+                                <br />
+                                <p>
+                                    For information on our cancellation policy, please click <a className='underline text-primary' href="#">here</a>
+                                </p>
+                            </div>
+                        } 
+                        />
                 </div>
-
-
             </div>
         </section>
     )

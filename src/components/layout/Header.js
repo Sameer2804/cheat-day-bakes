@@ -36,7 +36,7 @@ export default function Header() {
             </div>
             <div className="px-6">
                 <div className="max-w-4xl mx-auto flex items-center justify-between gap-x-28 mt-12">
-                <div className="size-32 relative grow basis-0" >
+                <div className="size-40 relative grow basis-0" >
                     <Link href={'/'}>
                         <Image src={'/logo.svg'} alt="logo" fill style={{objectFit:"cover"}} />
                     </Link>
@@ -47,7 +47,7 @@ export default function Header() {
                 <div className="flex gap-x-4 justify-center grow basis-0">
 
                     <DropdownIcon text={<Profile className="size-8 mt-px hover:scale-110 transition-transform"/>} status={status} />
-                    <Link href={''} className='relative hover:scale-110 transition-transform'>
+                    <Link href={'/cart'} className='relative hover:scale-110 transition-transform'>
                         <Bag className="size-8"/>
                         <div className='absolute size-5 bottom-0 flex justify-center items-center bg-primary text-white rounded-full' style={{ right: '-2px' }}>
                             <div className='text-xs font-light'>{cartProducts.length}</div>
@@ -55,7 +55,7 @@ export default function Header() {
                     </Link>
                 </div>
                 </div>
-                <div className="flex max-w-4xl mx-auto justify-between mt-20">
+                <div className="flex max-w-5xl text-lg mx-auto justify-around mt-20">
                     <Link href={'/'} className="hover:underline">HOME</Link>
                     <Link href={'/product-list/6610b6e4555875c2afaa2afd'} className="hover:underline">CUPCAKES</Link>
                     <Link href={'/product-list/6610b3a2555875c2afaa2ad9'} className="hover:underline">BROWNIES</Link>

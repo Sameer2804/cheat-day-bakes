@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -11,6 +13,17 @@ export default function RegisterPage() {
     const [userCreated, setUserCreated] = useState(false);
     const [credentialError, setCredentialError] = useState(false);
     const [credentialErrorList, setCredentialErrorList] = useState([]);
+
+    const session = useSession();
+    const status = session.status;
+
+    if(status === 'loading') {
+        return 'Loading...'
+    }
+
+    if(status === 'authenticated') {
+        return redirect('/my-account/edit-account')
+    }
 
 
     async function handleFormSubmit(e) {

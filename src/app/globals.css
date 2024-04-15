@@ -38,7 +38,7 @@ button[type="submit"]:disabled, .submit:disabled{
 }
 
 button[type="button"]:disabled, button[type="button"]:disabled:hover{
-    @apply bg-gray-200 cursor-wait;
+    @apply bg-gray-300 cursor-not-allowed;
 }
 
 .tabs > *.active {

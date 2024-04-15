@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
     return(
-        <section className="mt-16 relative">
+        <section className="mt-12 relative">
             <div className="relative w-full h-[480px]">
                 <Image src={"/MainCake.png"} alt={"Cake with cupcakes"} fill style={{objectFit: "cover"}} priority={true}/>
             </div>
