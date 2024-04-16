@@ -39,7 +39,7 @@ export default function CartPage() {
             )}
             {cartProducts.length > 0 && (
                 <div>
-                    <div className="grid text-xs mt-10 lg:mt-5 pb-1 font-light tracking-widest " style={{gridTemplateColumns: '0.5fr 0.25fr 0.25fr' }}>
+                    <div className="grid text-xs mt-10 lg:mt-5 pb-1 font-light tracking-widest" style={{gridTemplateColumns: '0.5fr 0.25fr 0.25fr' }}>
                         <div>PRODUCT</div>
                         <div className="mx-auto">QUANTITY</div>
                         <div className="ml-auto">TOTAL</div>
@@ -112,9 +112,11 @@ export default function CartPage() {
                     <div className="text-right mt-12">
                         <span className="font-ovo tracking-widest text-2xl">Subtotal</span>{' '}<span className="ml-3 text-2xl tracking-wider">£{total} GBP</span>
                     </div>
-                    <button type="button" className="md:max-w-96 block ml-auto max-w-full w-full mt-8 bg-primary text-white px-8 py-4">
-                        CHECKOUT
-                    </button>
+                    <Link href={'/checkout'}>
+                        <button type="button" className="md:max-w-96 block ml-auto max-w-full w-full mt-6 bg-primary text-white px-8 py-4">
+                            CHECKOUT
+                        </button>
+                    </Link>
                 </div>
             )}
             

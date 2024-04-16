@@ -37,6 +37,10 @@ button[type="submit"]:disabled, .submit:disabled{
     @apply bg-light cursor-not-allowed;
 }
 
+button[type="button"].arrow:disabled,  button[type="button"].arrow:disabled:hover{
+    @apply bg-white cursor-default;
+}
+
 button[type="button"]:disabled, button[type="button"]:disabled:hover{
     @apply bg-gray-300 cursor-not-allowed;
 }
