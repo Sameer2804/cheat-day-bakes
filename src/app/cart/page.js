@@ -1,5 +1,5 @@
 "use client";
-import { CartContext, cartProductPrice, combineProducts } from "@/components/AppContext"
+import { CartContext, cartProductPrice } from "@/components/AppContext"
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react"
 import Trash from "@/components/icons/Trash"

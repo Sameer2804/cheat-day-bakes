@@ -12,7 +12,8 @@ module.exports = {
         secondary: '#CED2C5',
         dark: '#414833',
         light: '#89917A',
-        thinGray: '#C1C1C1'
+        thinGray: '#C1C1C1',
+        receiptGray: '#EFEFEF',
       },
       fontFamily: {
         'ovo': ['Ovo', 'serif'], // Custom name for Ovo font
