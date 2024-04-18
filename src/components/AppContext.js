@@ -8,7 +8,7 @@ export const CartContext = createContext({});
 export function cartProductPrice(cartProduct) {
     let price = cartProduct.basePrice * cartProduct.quantity;
     if (cartProduct.size) {
-        price += cartProduct.size.price;
+        price += cartProduct.size.price * cartProduct.quantity;
     }
     if (cartProduct.toppings?.length > 0) {
         for (const topping of cartProduct.toppings) {
@@ -66,7 +66,6 @@ export function AppProvider({children}) {
     function clearCart() {
         setCartProducts([]);
         saveCartProductsToLocalStorage([]);
-        toast.success('Basket cleared');
     }
 
     function removeCartProduct(indexToRemove) {

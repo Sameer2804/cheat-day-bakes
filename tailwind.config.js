@@ -14,6 +14,7 @@ module.exports = {
         light: '#89917A',
         thinGray: '#C1C1C1',
         receiptGray: '#EFEFEF',
+        cardBg: '#E1E1E1',
       },
       fontFamily: {
         'ovo': ['Ovo', 'serif'], // Custom name for Ovo font

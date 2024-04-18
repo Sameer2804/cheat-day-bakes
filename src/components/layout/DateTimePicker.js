@@ -157,7 +157,23 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
             </div>
             <div className="mt-5">
                 <label htmlFor="pickUpTime">Choose Your Pick Up Time</label>
-                <select name="pickUpTime" id="pickUpTime" value={timeSelected} onChange={(e) => {setSelectedDate(setHourForSelectedDate(e)); handleTimeSelection(e)}}>
+                <select 
+                    name="pickUpTime" 
+                    id="pickUpTime" 
+                    value={timeSelected} 
+                    onInvalid={(e) => {
+                        e.target.setCustomValidity('Please select a time.');
+                        e.target.style.borderColor = 'red'; // Apply red border color
+                    }} 
+                    onChange={(e) => {
+                        setSelectedDate(setHourForSelectedDate(e)); 
+                        handleTimeSelection(e); 
+                        setTimeSelected(e.target.value);     
+                        e.target.setCustomValidity("");
+                    }}
+                    required
+                    >
+                        
                     <option value="" disabled hidden>Select</option>
                     <option value={12}>12:00 PM</option>
                     <option value={13}>1:00 PM</option>

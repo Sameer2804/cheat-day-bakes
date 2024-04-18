@@ -5,6 +5,9 @@ import { useProfile } from "@/components/UseProfile";
 import DateTimePicker from "@/components/layout/DateTimePicker"
 import OrderReceipt from "@/components/layout/OrderReceipt"
 import { CartContext, cartProductPrice } from "@/components/AppContext";
+import Spinner from "@/components/common/Spinner"
+import { redirect } from 'next/navigation'
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
 
@@ -15,10 +18,12 @@ export default function CheckoutPage() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
     const pickUpAddress = 'Severnake Close, E14 9WE';
+    const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);
 
     const [hasTimeBeenSelected, setHasTimeBeenSelected] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [collectionDateTime, setCollectionDateTime] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const initialStartDateRef = useRef(null);  // useRef to store the initial start date
     const [datePickerLoading, setDatePickerLoading] = useState(true);
@@ -32,34 +37,82 @@ export default function CheckoutPage() {
             setFirstName(profileData.firstName);
             setLastName(profileData.lastName);
             setPhone(profileData.phone);
+            setEmail(profileData.email);
         }
     }, [profileData])
 
     useEffect(() => {
+
+        if(typeof window !== 'undefined') {
+            if(window.location.href.includes('cancelled=1')) {
+                toast.error('Payment failed')
+            }
+        }
+
         setStartDate((prevStartDate) => {
           const newStartDate = new Date(); // Get current date
           newStartDate.setDate(newStartDate.getDate() + 3); // Set start date 3 days from current date
-          setSelectedDate(newStartDate);
+          setCollectionDateTime(newStartDate);
           initialStartDateRef.current = newStartDate; // Store the initial date in ref
           return newStartDate;
         });
+        setHasBeenSubmitted(false);
         setDatePickerLoading(false);
       }, []);
 
-    
+      if(!loading && cartProducts.length === 0) {
+        return redirect('/cart')
+      }
+
       if(datePickerLoading || profileLoading || loading) {
         return 'Loading...'
       }
 
-    
+      async function proceedToPayment(ev) {
+        ev.preventDefault();
+        setHasBeenSubmitted(true);
+        const userDetails = {
+            firstName,
+            lastName,
+            phone,
+            email,
+            collectionDateTime
+        } 
+        const promise = new Promise((resolve, reject) => {
+            fetch('/api/checkout', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    userDetails,
+                    cartProducts
+                }),
+            }).then(async (response) => {
+            if (response.ok) {
+                resolve();
+                window.location = await response.json();
+            } else {
+                reject();
+            }
+            });
+        });
+        
+        await toast.promise(promise, {
+            loading: 'Preparing your order...',
+            success: 'Redirecting to payment...',
+            error: 'Something went wrong... Please try again later',
+        })
+ 
+      }
+
+
 
     return(
-        <section className="max-w-6xl mx-auto mt-10 mb-28 px-5">
+        <section className="max-w-6xl mx-auto mt-10 mb-28 px-5" onSubmit={proceedToPayment}>
             <h1 className="font-ovo text-[2.8rem] mb-8 tracking-wider text-center">Checkout</h1>
-            <div className="grid mt-10 lg:mt-5 gap-x-16" style={{gridTemplateColumns: '61% 39%' }}>
+            <div className="lg:grid mt-10 lg:mt-5 gap-x-16 w-full" style={{gridTemplateColumns: '61% 39%' }}>
                 <div>
                     <div className=" text-xs pb-1 font-light tracking-widest">COLLECTION DETAILS</div>
-                    <form className="mx-auto lg:mx-0 lg:col-span-3 border-t border-b border-thinGray py-4" >
+                    <form id="checkout-form" className="mx-auto lg:mx-0 lg:col-span-3 border-t border-b border-thinGray py-4" >
                         <div className="flex gap-x-8">
                             <div className="grow">
                                 <label className="font-ovo text-xl" htmlFor="firstName">First Name</label>
@@ -74,7 +127,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                             <label htmlFor="email">Email</label>
-                            <input type="text" id="email" value={session?.data?.user.email}
+                            <input type="text" id="email" value={email} onChange={e => setEmail(e.target.value)} required
                             />
                         </div>
                         <div>
@@ -87,9 +140,10 @@ export default function CheckoutPage() {
                             <input type="text" id="pickUpAddress" 
                             value={pickUpAddress} disabled={true} required/>
                         </div>
+
                         <DateTimePicker 
-                            selectedDate={selectedDate}
-                            setSelectedDate={setSelectedDate}
+                            selectedDate={collectionDateTime}
+                            setSelectedDate={setCollectionDateTime}
                             startDate={startDate}
                             setStartDate={setStartDate}
                             initialStartDateRef={initialStartDateRef}
@@ -97,13 +151,19 @@ export default function CheckoutPage() {
                         />
                     </form>
                 </div>
-                <div className="bg-receiptGray py-8 px-10">
-                    <OrderReceipt 
-                        cartProducts={cartProducts} 
-                        selectedDate={selectedDate} 
-                        total={total}
-                        hasTimeBeenSelected={hasTimeBeenSelected}
-                    />
+                <div className="mt-5">
+                    <div className="bg-receiptGray pt-9 pb-8 lg:px-10 px-6">
+                        <OrderReceipt
+                            cartProducts={cartProducts}
+                            selectedDate={collectionDateTime}
+                            total={total}
+                            hasTimeBeenSelected={hasTimeBeenSelected}
+                        />
+                        <div className="mt-6">
+                            <button form="checkout-form" type="submit">{hasBeenSubmitted ? <Spinner /> : 'Confirm and Pay'}</button>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
