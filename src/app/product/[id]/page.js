@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import Bowl from "@/components/icons/Bowl"
 import ReturnBasket from "@/components/icons/ReturnBasket"
 import ExtraItemInfo from "@/components/common/ExtraItemInfo"
 import QuantityButton from "@/components/layout/QuantityButton"
+import CartSidePanel from "@/components/layout/CartSidePanel"
 
 
 export default function ProductPage() {
@@ -24,6 +25,10 @@ export default function ProductPage() {
     const [selectedToppingsError, setSelectedToppingsError] = useState(false);
     const [giftBoxOptionChecked, setGiftBoxOptionChecked] = useState(false);
     const [quantity, setQuantity] = useState(1);
+    const [hasBuyItNow, setHasBuyItNow] = useState(false);
+
+    const [cartSidePanelOpen, setCartSidePanelOpen] = useState(false)
+
 
     
     useEffect(() => {
@@ -60,13 +65,25 @@ export default function ProductPage() {
         const meetRequirements = hasSizeBeenChosen && hasToppingBeenChosen;
         if(item && (meetRequirements)) {
             addToCart(item, selectedSize, selectedToppings, giftBoxOptionChecked, quantity);
-            toast.success('Added to cart!')
+            setCartSidePanelOpen(true);
+            return;
         }
         else{
             if(!hasToppingBeenChosen) {
                 setSelectedToppingsError(true);
+                return;
             }
         }
+    }
+
+    function handleBuyItNow() {
+        handleAddToCart();
+        setHasBuyItNow(true);
+    }
+
+    if(hasBuyItNow) {
+        setHasBuyItNow(false);
+        return redirect('/checkout')
     }
 
     let totalPrice = item?.basePrice * quantity;
@@ -81,6 +98,7 @@ export default function ProductPage() {
     if(giftBoxOptionChecked) {
         totalPrice += 1.5 * quantity;
     }
+
 
 
     return(
@@ -152,19 +170,19 @@ export default function ProductPage() {
 
                 <button 
                     onClick={handleAddToCart}
-                    className="w-full mt-8 border border-black px-8 py-3.5">
+                    className="w-full mt-8 border border-black px-8 py-3.5 select-none">
                     Add to cart {`£${(totalPrice).toFixed(2)}`}
                 </button>
-                <button className="w-full mt-3 bg-primary text-white px-8 py-3.5">
+                <button onClick={handleBuyItNow} className="w-full mt-3 bg-primary text-white px-8 py-3.5 select-none">
                     Buy it now
                 </button>
-                <div className='mt-6 border-t border-gray-300'>
+                <div className='mt-6 border-t border-gray-300 select-none'>
                     <ExtraItemInfo 
                         icon={<Bowl />} 
                         title={'Ingredients'} 
                         text={item?.ingredients} />
                 </div>
-                <div>
+                <div className='select-none'>
                     <ExtraItemInfo 
                         icon={<ReturnBasket />} 
                         title={'Refund Policy'}
@@ -189,6 +207,7 @@ export default function ProductPage() {
                         } 
                         />
                 </div>
+                <CartSidePanel open={cartSidePanelOpen} setOpen={setCartSidePanelOpen}/>
             </div>
         </section>
     )

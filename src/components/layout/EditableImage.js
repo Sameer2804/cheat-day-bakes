@@ -1,6 +1,6 @@
 import Image from "next/image";
 import toast from "react-hot-toast";
-import Plus from "@/components/icons/Plus"
+import Add from "@/components/icons/Add"
 
 export default function EditableImage({link, setLink}) {
 
@@ -50,7 +50,7 @@ export default function EditableImage({link, setLink}) {
     )}
       {!link && (
         <div className="bg-gray-200 border border-black flex flex-col justify-center items-center gap-y-1.5 lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80">
-            <Plus />
+            <Add />
             <div className="font-light">Add Image</div>
         </div>
       )}

@@ -13,7 +13,6 @@ import { CartContext } from '../AppContext';
 export default function Header() {
     const session = useSession();
 
-    console.log(session);
     const status = session.status;
     const {cartProducts} = useContext(CartContext);
     const [categories, setCategories] = useState([]);

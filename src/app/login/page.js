@@ -20,11 +20,7 @@ export default function LoginPage() {
         return 'Loading...'
     }
     
-    if(loginComplete) {
-        return redirect('/')
-    }
-
-    if(status === 'authenticated') {
+    if(loginComplete || status === 'authenticated') {
         return redirect('/my-account/edit-account')
     }
 

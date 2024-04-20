@@ -76,9 +76,9 @@ export default function MenuItemPriceProp({children, props, setProps}) {
                               value={size.price} onChange={ev => editProp(ev, index, 'price')} required/>
                           </div>
                           <div>
-                            <div className='mt-9'>
+                            <div onClick={() => { removeProp(index); toggleBtnClick() }} className='mt-9 cursor-pointer'>
                               <Trash
-                              onClick={() => { removeProp(index); toggleBtnClick() }} />
+                               />
                             </div>
                           </div>
                           </div>

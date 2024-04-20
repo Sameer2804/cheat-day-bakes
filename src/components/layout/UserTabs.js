@@ -16,13 +16,14 @@ export default function UserTabs({isAdmin}) {
                 >
                     Account Details
                 </Link>
-
-                <Link 
-                href={'/my-account/orders'}
-                className={path === '/my-account/orders' ? 'active' : ''}
-                >
-                    Orders
-                </Link>
+                {!isAdmin && (
+                    <Link 
+                    href={'/my-account/orders'}
+                    className={path === '/my-account/orders' ? 'active' : ''}
+                    >
+                        Orders
+                    </Link>
+                )}
 
                 {isAdmin && (
                     <>
@@ -40,8 +41,8 @@ export default function UserTabs({isAdmin}) {
                             Menu Items
                             <AdminIcon />
                         </Link>
-                        <Link href={''}
-                            className={path === '/my-account/all-orders' ? 'active' : ''}
+                        <Link href={'/my-account/orders'}
+                            className={path === '/my-account/orders' ? 'active' : ''}
                         >
                             All Orders
                             <AdminIcon />

@@ -11,18 +11,37 @@ export async function POST(req) {
     const { userDetails, cartProducts } = await req.json();
     const session = await getServerSession(authOptions);
     const loggedInEmail = session?.user?.email;
+    userDetails.email = loggedInEmail ? loggedInEmail : userDetails.email;
+
+    const formatDate = (date) => {
+        date = new Date(date);
+        let formattedDate = date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        });
+        formattedDate += ' - ' + date.toLocaleTimeString('en-GB', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        });
+
+        if (formattedDate.includes('0:00')) {
+            formattedDate = formattedDate.replace('0:00', '12:00');
+        }
+    
+        return formattedDate;
+    };
 
     function generateOrderNumber() {
-        const randomNumber = Math.floor(Math.random() * 1000);
         const timestamp = Date.now();
-        return `${timestamp}${randomNumber}`;
+        return `${timestamp}`;
     }
     
     const orderNumber = generateOrderNumber()
 
     const orderDoc = await Order.create({
         orderNumber,
-        loggedInEmail,
         ...userDetails,
         cartProducts,
         paid: false
@@ -77,6 +96,8 @@ export async function POST(req) {
         metadata: {orderId: orderDoc._id.toString()},
         payment_intent_data: {
             metadata: {orderId: orderDoc._id.toString()},
+            receipt_email: userDetails.email,
+            description: `Order No: ${orderNumber} (Collection for ${formatDate(userDetails?.collectionDateTime).replace(',', ' -')})`,
         },
         allow_promotion_codes: true,
 

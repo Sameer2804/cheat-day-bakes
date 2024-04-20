@@ -1,8 +1,8 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { CheckIcon } from '@heroicons/react/24/outline';
 
-export default function DeleteDialog({open, setOpen, title, text, onDelete, btnText="Delete"}) {
+export default function CompleteDialog({open, setOpen, title, text, onComplete}) {
 
   const cancelButtonRef = useRef(null)
 
@@ -36,8 +36,8 @@ export default function DeleteDialog({open, setOpen, title, text, onDelete, btnT
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
@@ -54,10 +54,10 @@ export default function DeleteDialog({open, setOpen, title, text, onDelete, btnT
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => {onDelete(); setOpen(false)}}
+                    className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                    onClick={() => {onComplete(); setOpen(false)}}
                   >
-                    {btnText}
+                    Complete
                   </button>
                   <button
                     type="button"

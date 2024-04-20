@@ -44,7 +44,7 @@ export default function CartPage() {
                         <div className="mx-auto">QUANTITY</div>
                         <div className="ml-auto">TOTAL</div>
                     </div>
-                    <div className="grid py-7 gap-y-8 border-t border-b border-thinGray mb-5" style={{gridTemplateColumns: '0.5fr 0.25fr 0.25fr' }}>
+                    <div className="grid py-7 gap-y-8 border-t border-b border-thinGray mb-5 select-none" style={{gridTemplateColumns: '0.5fr 0.25fr 0.25fr' }}>
                         {cartProducts.map((product, index) => (
                             <>
                                 <div className="flex">

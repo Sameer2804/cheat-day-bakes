@@ -18,8 +18,8 @@ export default function CheckoutPage() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const pickUpAddress = 'Severnake Close, E14 9WE';
+    const [email, setEmail] = useState(session?.data?.user?.email);
+    const pickUpAddress = 'Severnake Close, London, E14 9WE';
     const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);
 
     const [hasTimeBeenSelected, setHasTimeBeenSelected] = useState(false);
@@ -27,7 +27,14 @@ export default function CheckoutPage() {
     const [startDate, setStartDate] = useState(new Date());
     const initialStartDateRef = useRef(null);  // useRef to store the initial start date
     const [datePickerLoading, setDatePickerLoading] = useState(true);
-
+    const daysAheadShown = [
+        { quantity: 1, daysAhead: 3 }, //1 to 3 quantities = 3 days ahead, then 4 to 7 quantities = 6 days ahead and so on
+        { quantity: 4, daysAhead: 6 },
+        { quantity: 8, daysAhead: 8 },
+        { quantity: 12, daysAhead: 12 },
+        { quantity: 16, daysAhead: 15 }
+        // Add more brackets as necessary
+    ];
     const {cartProducts, loading} = useContext(CartContext);
     let total = cartProducts.reduce((totalPrice, product) => totalPrice + cartProductPrice(product), 0).toFixed(2);
 
@@ -48,17 +55,34 @@ export default function CheckoutPage() {
                 toast.error('Payment failed')
             }
         }
+        // Calculate total quantity of products
+        const totalQuantity = cartProducts.reduce((acc, product) => acc + product.quantity, 0);
+        // Determine the days to add based on total quantity
+        const daysToAdd = findDaysAhead(totalQuantity);
 
         setStartDate((prevStartDate) => {
+
           const newStartDate = new Date(); // Get current date
-          newStartDate.setDate(newStartDate.getDate() + 3); // Set start date 3 days from current date
+          newStartDate.setDate(newStartDate.getDate() + daysToAdd); // Set start date 3 days from current date
           setCollectionDateTime(newStartDate);
           initialStartDateRef.current = newStartDate; // Store the initial date in ref
           return newStartDate;
         });
         setHasBeenSubmitted(false);
         setDatePickerLoading(false);
-      }, []);
+      }, [cartProducts]);
+
+        function findDaysAhead(totalQuantity) {
+            // Reverse iterate to find the first matching bracket whose maxQuantity is >= totalQuantity
+            for (let i = daysAheadShown.length - 1; i >= 0; i--) {
+                if (totalQuantity < daysAheadShown[i].quantity && totalQuantity >= daysAheadShown[i-1]?.quantity) {
+                    return daysAheadShown[i-1].daysAhead;
+                }
+            }
+            return daysAheadShown[daysAheadShown.length - 1].daysAhead; //else return the highest amount of days ahead
+
+        }
+    
 
       if(!loading && cartProducts.length === 0) {
         return redirect('/cart')
@@ -67,6 +91,7 @@ export default function CheckoutPage() {
       if(datePickerLoading || profileLoading || loading) {
         return 'Loading...'
       }
+        
 
       async function proceedToPayment(ev) {
         ev.preventDefault();
@@ -101,9 +126,9 @@ export default function CheckoutPage() {
             success: 'Redirecting to payment...',
             error: 'Something went wrong... Please try again later',
         })
+        setHasBeenSubmitted(false);
  
       }
-
 
 
     return(
@@ -126,14 +151,18 @@ export default function CheckoutPage() {
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="email">Email</label>
-                            <input type="text" id="email" value={email} onChange={e => setEmail(e.target.value)} required
-                            />
-                        </div>
-                        <div>
                             <label htmlFor="phone">Phone</label>
                             <input type="tel" id="phone" autoComplete="tel" 
                             value={phone} onChange={e => setPhone(e.target.value)} required/>
+                        </div>
+                        <div>
+                            <label htmlFor="email">Email</label>
+                            <input type="text" id="email" 
+                                value={email} 
+                                onChange={e => setEmail(e.target.value)} 
+                                disabled={status === 'authenticated' ? true : false}
+                                required
+                            />
                         </div>
                         <div>
                             <label htmlFor="pickUpAddress">Pick Up Address</label>
@@ -160,8 +189,7 @@ export default function CheckoutPage() {
                             hasTimeBeenSelected={hasTimeBeenSelected}
                         />
                         <div className="mt-6">
-                            <button form="checkout-form" type="submit">{hasBeenSubmitted ? <Spinner /> : 'Confirm and Pay'}</button>
-                            
+                            <button form="checkout-form" type="submit">{hasBeenSubmitted ? <Spinner /> : 'Confirm and Pay'}</button>    
                         </div>
                     </div>
                 </div>

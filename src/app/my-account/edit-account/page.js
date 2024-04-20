@@ -4,41 +4,33 @@ import { redirect } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import UserTabs from "@/components/layout/UserTabs"
+import { useProfile } from '@/components/UseProfile';
 
 
 export default function MyAccountPage() {
 
     const session = useSession();
     const {status} = session;
+
+    const {loading:profileLoading, data:profileData} = useProfile();
+
     
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [isProfileFetched, setIsProfileFetched] = useState(false);
-
 
     useEffect(() => {
-        if (status === "authenticated") {
-            fetch('/api/profile').then(response => {
-                response.json().then(data => {
-                    setFirstName(data.firstName);
-                    setLastName(data.lastName);
-                    setPhone(data.phone);
-                    setIsAdmin(data.admin);
-                    setIsProfileFetched(true);
-                })
-            })
-        }
+        setFirstName(profileData.firstName)
+        setLastName(profileData.lastName)
+        setPhone(profileData.phone)
 
-    }, [session, status])
+    }, [profileData])
 
-    
     if (status === "unauthenticated") {
         return redirect("/login")
     }
 
-    if (status === "loading" || !isProfileFetched) {
+    if (profileLoading) {
         return "Loading..."
     }
 
@@ -69,9 +61,9 @@ export default function MyAccountPage() {
     }
 
     return (
-        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
-            <UserTabs isAdmin={isAdmin} />
-            <form className="max-w-2xl mx-auto lg:mx-0 lg:col-span-3" onSubmit={handleFormSubmit}>
+        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
+            <UserTabs isAdmin={profileData.admin} />
+            <form className="max-w-2xl mx-auto lg:mx-0 px-5" onSubmit={handleFormSubmit}>
                 <div>
                     <label htmlFor="firstName">First Name</label>
                     <input type="text" id="firstName" autoComplete="given-name" 

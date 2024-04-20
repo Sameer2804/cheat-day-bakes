@@ -93,9 +93,9 @@ export default function CategoriesPage() {
 
 
     return(
-        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
-            <UserTabs isAdmin={true} />
-            <div className="lg:mx-0 lg:col-span-3 ">
+        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
+            <UserTabs isAdmin={profileData.admin} />
+            <div className="lg:mx-0 px-5">
               <form className="max-w-2xl mx-auto lg:mx-0 lg:col-span-3 lg:flex gap-x-5" onSubmit={handleCategorySubmit}>
                   <div className="flex-grow">
                       <label htmlFor="category">

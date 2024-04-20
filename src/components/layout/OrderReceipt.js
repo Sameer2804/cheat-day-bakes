@@ -33,7 +33,7 @@ export default function OrderReceipt({cartProducts, selectedDate, total, hasTime
             <div>
                 <div className="flex justify-between text-xs mt-10 lg:mt-5 pb-1 font-light tracking-widest border-b border-thinGray mb-5">
                     <div>PRODUCT</div>
-                    <div className="ml-auto">SUBTOTAL</div>
+                    <div className="text-right">SUBTOTAL</div>
                 </div>
                 <div className="border-b border-thinGray mb-3">
                 {cartProducts.length > 0 && cartProducts.map(product => (

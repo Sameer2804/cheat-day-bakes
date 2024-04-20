@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import NoticeBox from "@/components/common/NoticeBox"
 import toast from 'react-hot-toast';
 import Link from "next/link";
-import Left from "@/components/icons/Left"
+import LeftCrocArrow from "@/components/icons/LeftCrocArrow"
 import { redirect } from 'next/navigation';
 import MenuItemForm from "@/components/layout/MenuItemForm"
 
@@ -57,11 +57,11 @@ export default function NewMenuItemsPage() {
     }
 
     return (
-        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid lg:grid-cols-4">
-            <UserTabs isAdmin={true} />
-            <div className="lg:mx-0 lg:col-span-3">
+        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
+            <UserTabs isAdmin={profileData.admin} />
+            <div className="lg:mx-0 px-5">
                 <Link href={'/my-account/menu-items'} className="items-center mb-8 gap-x-2 border border-black flex rounded-xl py-2 justify-center hover:bg-gray-200 hover:cursor-pointer">
-                    <Left />
+                    <LeftCrocArrow />
                     <div>Show All Menu Items</div>
                 </Link>
                 <NoticeBox>Note: The first image will be the cover for the item</NoticeBox>
