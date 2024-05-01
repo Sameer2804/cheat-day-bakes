@@ -1,14 +1,32 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { CartContext, cartProductPrice } from "@/components/AppContext"
+import QuantityButton from './QuantityButton';
 
 export default function CartSidePanel({open, setOpen}) {
 
-  const {cartProducts, removeCartProduct} = useContext(CartContext);
+  const {cartProducts, removeCartProduct, updateQuantities} = useContext(CartContext);
 
   let subtotal = cartProducts.reduce((totalPrice, product) => totalPrice + cartProductPrice(product), 0).toFixed(2);
 
+  const [quantity, setQuantity] = useState([]);
+  const [disableUpdateButton, setDisableUpdateButton] = useState(true);
+
+    useEffect(() => {
+      // Map through cartProducts and extract quantities into an array
+      const initialQuantities = cartProducts.map(product => product.quantity);
+      setQuantity(initialQuantities); // Set the quantity array in state
+  }, [cartProducts]); // Update quantity whenever cartProducts changes
+
+  const setQuantityAtIndex = (index, value) => {
+    setQuantity(prevQuantity => {
+        const newQuantity = [...prevQuantity]; // Create a copy of the quantity array
+        newQuantity[index] = value; // Set the value at the specified index
+        return newQuantity; // Return the updated quantity array
+    });
+    setDisableUpdateButton(false);
+};
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -58,6 +76,9 @@ export default function CartSidePanel({open, setOpen}) {
                       <div className="mt-8">
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
+                            {cartProducts.length == 0 && (
+                              <p>Basket Empty</p>
+                            )}
                             {cartProducts.length > 0 && cartProducts.map((product, index) => (
                               <li className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -97,7 +118,11 @@ export default function CartSidePanel({open, setOpen}) {
                                     )}
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm mt-3">
-                                    <p className="text-gray-500">Qty {product.quantity}</p>
+                                    {product.quantity && (
+                                        <div className='h-12 w-32'>
+                                            <QuantityButton quantity={quantity[index]} setQuantity={(value) => setQuantityAtIndex(index, value)} />
+                                        </div>
+                                    )}
 
                                     <div className="flex">
                                       <button
@@ -124,14 +149,25 @@ export default function CartSidePanel({open, setOpen}) {
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Discounts applied at checkout.</p>
                       <div className="mt-6">
+                        <button
+                          type="button"
+                          disabled={disableUpdateButton}
+                          onClick={() => {updateQuantities(quantity); setDisableUpdateButton(true)}}
+                          className={`w-full rounded-md px-6 py-3 text-base font-medium shadow-sm hover:bg-secondary duration-300 ${disableUpdateButton ? 'text-gray-500' : 'border border-primary text-primary'}`}
+                        >
+                          Update Cart
+                        </button>
+                      </div>
+                      <div className="mt-3">
                         <a
                           href="/checkout"
+                          onClick={() => {updateQuantities(quantity); setDisableUpdateButton(true)}}
                           className="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-dark"
                         >
                           Checkout
                         </a>
                       </div>
-                      <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                      <div className="mt-5 flex justify-center text-center text-sm text-gray-500">
                         <p>
                           or{' '}
                           <button

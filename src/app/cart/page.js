@@ -32,7 +32,7 @@ export default function CartPage() {
 
     let total = cartProducts.reduce((totalPrice, product) => totalPrice + cartProductPrice(product), 0).toFixed(2);
     return(
-        <section className="max-w-6xl mx-auto w-full mt-10 mb-28 px-5">
+        <section className="max-w-6xl mx-auto w-full mt-10 mb-28 px-5 min-h-96">
             <h1 className="font-ovo text-[2.5rem] mb-8 tracking-wider text-center">Shopping cart</h1>
             {cartProducts?.length === 0 && (
                 <div>Your cart is currently empty</div>
@@ -101,19 +101,19 @@ export default function CartPage() {
                         ))}
                     </div>
                     <div className="md:flex gap-x-6 justify-end mt-8">
-                        <button type="button" className="md:max-w-60 md:mb-0 mb-4 max-w-full w-full border border-primary text-primary px-8 py-3.5" onClick={clearCart}>
+                        <button type="button" className="md:max-w-60 md:mb-0 mb-4 max-w-full w-full border border-primary text-primary px-8 py-3.5 duration-300" onClick={clearCart}>
                             CLEAR BASKET
                         </button>
-                        <button type="button" disabled={disableUpdateButton} className="md:max-w-60 max-w-full w-full bg-primary text-white px-8 py-3.5 duration-200" 
+                        <button type="button" disabled={disableUpdateButton} className="md:max-w-60 max-w-full w-full bg-primary text-white px-8 py-3.5 duration-300" 
                             onClick={() => {updateQuantities(quantity); setDisableUpdateButton(true)}}>
                             UPDATE BASKET
                         </button>
                     </div>
-                    <div className="text-right mt-12">
+                    <div className="md:text-right text-center mt-12">
                         <span className="font-ovo tracking-widest text-2xl">Subtotal</span>{' '}<span className="ml-3 text-2xl tracking-wider">£{total} GBP</span>
                     </div>
                     <Link href={'/checkout'}>
-                        <button type="button" className="md:max-w-96 block ml-auto max-w-full w-full mt-6 bg-primary text-white px-8 py-4">
+                        <button type="button" className="md:max-w-96 block ml-auto max-w-full w-full mt-6 bg-primary text-white px-8 py-4 duration-300">
                             CHECKOUT
                         </button>
                     </Link>

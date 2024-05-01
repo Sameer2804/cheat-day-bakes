@@ -27,9 +27,9 @@ export default function ProductListPage() {
 
 
     return(
-        <section className='max-w-6xl mx-auto w-full mt-8 mb-28'>
+        <section className='max-w-6xl mx-auto px-3 mt-8 mb-28'>
             <div className='font-ovo text-center md:text-5xl text-4xl uppercase bg-secondary py-7 md:mb-16 mb-8'>{category?.name}</div>
-            <div className="grid md:grid-cols-3 grid-cols-2 md:gap-x-6 gap-x-3 gap-y-6 font-light tracking-wider xl:px-0 px-3">
+            <div className="grid md:grid-cols-3 grid-cols-2 md:gap-x-6 gap-x-3 gap-y-6 font-light tracking-wider xl:px-0">
                 {menuItems?.length > 0 && menuItems.map(item => (
                     <div className="mx-auto">
                         <Link href={'/product/'+item._id}>

@@ -6,10 +6,10 @@ import Cogwheel from "@/components/icons/Cogwheel"
 export default function Promises(){
     return (
         <section className="bg-secondary h-full py-10 mb-32 px-8">
-            <div className="font-ovo text-center text-4xl text-[#403E3E]">
+            <div className="font-ovo text-center sm:text-5xl text-4xl text-[#403E3E] leading-snug">
                 OUR PROMISES TO YOU
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 max-w-6xl mx-auto mt-12 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-8 max-w-6xl mx-auto md:mt-10 mt-9 items-center">
                 <div className="">
                     <Calendar className="size-20 block mx-auto mt-2"/>
                     <h4 className="font-ovo text-center text-2xl mt-7">7 DAYS A<br />WEEK</h4>

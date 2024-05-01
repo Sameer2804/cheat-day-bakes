@@ -52,9 +52,9 @@ export default function MenuItemForm({onSubmit, menuItem}) {
         onSubmit={ e => 
             onSubmit(e, {images, name, description, ingredients, basePrice, category, sizes, toppings, giftBoxOption})}
         >
-            <div className="grid md:grid-cols-3 grid-cols-1 gap-y-6 mb-8">
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-y-6 gap-x-2 mb-8">
                 {images.map((image, index) => (
-                    <div key={index} className="min-w-[220px] mx-auto">
+                    <div key={index} className="mx-auto">
                         <EditableImage
                             link={image}
                             setLink={newImage =>

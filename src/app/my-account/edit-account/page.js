@@ -63,7 +63,7 @@ export default function MyAccountPage() {
     return (
         <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
             <UserTabs isAdmin={profileData.admin} />
-            <form className="max-w-2xl mx-auto lg:mx-0 px-5" onSubmit={handleFormSubmit}>
+            <form className="max-w-2xl mx-auto lg:mx-0" onSubmit={handleFormSubmit}>
                 <div>
                     <label htmlFor="firstName">First Name</label>
                     <input type="text" id="firstName" autoComplete="given-name" 
@@ -76,7 +76,7 @@ export default function MyAccountPage() {
                 </div>
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input type="text" id="email" disabled={true} value={session.data.user.email}
+                    <input type="text" id="email" disabled={true} value={session?.data?.user?.email}
                     />
                 </div>
                 <div>

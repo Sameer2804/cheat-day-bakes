@@ -19,6 +19,9 @@ module.exports = {
       fontFamily: {
         'ovo': ['Ovo', 'serif'], // Custom name for Ovo font
       },
+      screens: {
+        'hover-hover': {'raw': '(hover: hover)'},
+      },
     },
   },
   plugins: [],

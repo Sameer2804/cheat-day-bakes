@@ -93,9 +93,9 @@ export default function CategoriesPage() {
 
 
     return(
-        <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
+        <section className="max-w-6xl mx-auto lg:mt-14 mt-8 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
             <UserTabs isAdmin={profileData.admin} />
-            <div className="lg:mx-0 px-5">
+            <div className="lg:mx-0">
               <form className="max-w-2xl mx-auto lg:mx-0 lg:col-span-3 lg:flex gap-x-5" onSubmit={handleCategorySubmit}>
                   <div className="flex-grow">
                       <label htmlFor="category">
@@ -132,7 +132,6 @@ export default function CategoriesPage() {
                     text={'Are you sure you want to delete this category? This action cannot be undone.'}/>
                   {categories?.length > 0 && categories.map(category => (
                     <div className="flex py-5 border-b border-thinGray items-center">
-                    
                       <div className="font-ovo text-2xl mr-auto">{category.name}</div>
                       <button 
                       className="text-[0.9rem] bg-primary text-white px-8 py-2 rounded-lg hover:bg-dark" 

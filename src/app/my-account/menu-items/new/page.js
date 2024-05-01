@@ -59,7 +59,7 @@ export default function NewMenuItemsPage() {
     return (
         <section className="max-w-6xl mx-auto mt-14 mb-28 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
             <UserTabs isAdmin={profileData.admin} />
-            <div className="lg:mx-0 px-5">
+            <div className="lg:mx-0">
                 <Link href={'/my-account/menu-items'} className="items-center mb-8 gap-x-2 border border-black flex rounded-xl py-2 justify-center hover:bg-gray-200 hover:cursor-pointer">
                     <LeftCrocArrow />
                     <div>Show All Menu Items</div>

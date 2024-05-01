@@ -25,7 +25,7 @@ form > div> label[for] {
 }
 
 button[type="submit"].create-btn {
-    @apply block w-full bg-primary text-white px-8 py-[0.65rem];
+    @apply block w-full bg-primary text-white px-8 lg:py-[0.65rem] py-3.5 text-base;
 }
 
 
@@ -51,4 +51,16 @@ button[type="button"]:disabled, button[type="button"]:disabled:hover{
 
 .tabs {
     @apply text-[1.08rem] border-l border-thinGray font-light pl-2.5;
+}
+
+.mobile-tabs > *.active {
+    @apply bg-primary text-white;
+}
+
+.mobile-tabs {
+    @apply flex flex-wrap gap-x-3 gap-y-3 justify-center mb-10 max-w-2xl mx-auto;
+}
+
+.mobile-tabs > * {
+    @apply border border-primary grow text-center rounded-3xl px-5 py-2  text-primary;
 }

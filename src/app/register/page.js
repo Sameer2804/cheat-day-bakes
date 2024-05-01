@@ -66,7 +66,7 @@ export default function RegisterPage() {
                     User registered. You can now <Link href={'/login'}><span className='underline'>Login</span> &raquo;</Link>
                 </div>
             )}
-            <form className="max-w-sm mx-auto mt-8" onSubmit={handleFormSubmit}>
+            <form className="lg:max-w-md lg:px-0 w-full mx-auto mt-8 px-3" onSubmit={handleFormSubmit}>
                 {credentialError && (
                         <div className="flex p-4 mb-4 -mt-2 text-sm rounded-lg bg-red-50 text-white" role="alert" style={{backgroundColor: '#D43811'}}>
                         <svg className="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
