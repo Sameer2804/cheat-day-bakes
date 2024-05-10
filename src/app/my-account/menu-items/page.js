@@ -14,7 +14,8 @@ export default function MenuItemsPage() {
     useEffect(() => {
         fetch('/api/menu-items').then(res => {
             res.json().then(menuItems => {
-                setMenuItems(menuItems);
+                const filteredMenuItems = menuItems.filter(item => item.categoryID ? false : true)
+                setMenuItems(filteredMenuItems);
             });
         })
     }, [])

@@ -13,6 +13,11 @@ export async function POST(req) {
     const loggedInEmail = session?.user?.email;
     userDetails.email = loggedInEmail ? loggedInEmail : userDetails.email;
 
+    const existingCollectionDateTime = await Order.findOne({ collectionDateTime: userDetails.collectionDateTime });
+    if (existingCollectionDateTime && existingCollectionDateTime.paid && existingCollectionDateTime.status !== 'cancelled') {
+        return Response.json({ error: 'An order with the same collection date and time already exists.' }, { status: 400 });
+    }
+
     const formatDate = (date) => {
         date = new Date(date);
         let formattedDate = date.toLocaleDateString('en-GB', {

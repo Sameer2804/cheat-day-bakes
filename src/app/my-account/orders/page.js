@@ -97,7 +97,7 @@ export default function OrdersPage() {
     }
 
     return(
-        <section className="max-w-6xl mx-auto lg:mt-14 mt-8 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
+        <section className="max-w-6xl mx-auto lg:my-14 my-8 px-6 lg:grid" style={{gridTemplateColumns: '20% 80%' }}>
             <UserTabs isAdmin={profileData.admin} />
             <div>
                 {orders?.length === 0 && (

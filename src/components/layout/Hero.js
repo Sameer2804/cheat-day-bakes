@@ -8,7 +8,7 @@ export default function Hero() {
                 <div className="lg:mr-auto place-self-center lg:col-span-7">
                     <h1 className="max-w-2xl mb-4 text-4xl font-bold tracking-tight leading-none lg:text-5xl xl:text-6xl">Indulge in Freshly Baked Temptations</h1>
                     <p className="max-w-2xl mb-6 font-light lg:mb-8 sm:text-lg lg:text-xl">From first glance to last bite, our freshly baked temptations promise a sweet journey of indulgence and delight!</p>
-                    <a href="#" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-dark">
+                    <a href="/product-list/663763607c0a5deda8b70c57" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-dark">
                         View All Categories
                         <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"></path></svg>
                     </a>

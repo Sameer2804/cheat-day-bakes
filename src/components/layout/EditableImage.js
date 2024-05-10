@@ -2,7 +2,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import Add from "@/components/icons/Add"
 
-export default function EditableImage({link, setLink}) {
+export default function EditableImage({link, setLink, customSize}) {
 
   async function handleFileChange(ev) {
     const files = ev.target.files;
@@ -40,7 +40,7 @@ export default function EditableImage({link, setLink}) {
     <label className="cursor-pointer normal-font">
       {link && (
         <div>
-          <div className="relative mx-auto lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80">
+          <div className={`relative mx-auto ${customSize ? customSize : 'lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80'}`}>
               <Image src={link} alt="menu item" layout="fill"/>
           </div>
           <div className="mt-2 text-center">Change image</div>
@@ -49,8 +49,10 @@ export default function EditableImage({link, setLink}) {
 
     )}
       {!link && (
-        <div className="bg-gray-200 border border-black flex flex-col justify-center items-center gap-y-1.5 lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80">
-            <Add />
+        <div className={`bg-gray-200 border border-black flex flex-col justify-center items-center gap-y-1.5 ${customSize ? customSize : 'lg:w-60 lg:h-60 md:w-56 md:h-56 w-80 h-80'}`}>
+            {!customSize && (
+              <Add />
+            )}
             <div className="font-light">Add Image</div>
         </div>
       )}

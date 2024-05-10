@@ -102,9 +102,9 @@ export default function ProductPage() {
 
 
     return(
-        <section className='max-w-6xl mx-auto w-full mt-8 mb-28 grid md:grid-cols-2 grid-cols-1 gap-x-4'>
+        <section className='max-w-6xl mx-auto w-full mt-8 mb-28 grid md:grid-cols-2 grid-cols-1 gap-x-4 lg:px-0 px-2.5'>
             <div className='flex flex-col mx-auto'>
-                <Image src={selectedImage} width={520} height={520} />
+                <Image src={selectedImage} width={520} height={520} className='rounded-sm'/>
                 <div className='flex mt-7 gap-x-4'>
                     {item?.images.map((image, index) => (
                         <div className={selectedImage === image ? 'border-4 border-dark cursor-pointer' : 'cursor-pointer'}>
@@ -114,8 +114,8 @@ export default function ProductPage() {
                 </div>
             </div>
             <div>
-                <div className='text-sm tracking-wider mb-1 font-light'>CHEAT DAY BAKES</div>
-                <div className='mb-4 text-4xl capitalize'>{item?.name}</div>
+                <div className='text-sm tracking-wider mb-1 font-light md:mt-0 mt-5'>CHEAT DAY BAKES</div>
+                <div className='mb-4 md:text-4xl text-3xl capitalize'>{item?.name}</div>
                 <div className='mb-3 text-xl font-light'>{`£${(item?.basePrice + (selectedSize?.price || 0)).toFixed(2)}`}</div>
                 <div className='text-sm font-light tracking-widest leading-5'>{formatDescription(item?.description)}</div>
                 {item?.sizes?.length > 0 && (
@@ -157,7 +157,7 @@ export default function ProductPage() {
                 <div>
                     <div className='text-sm tracking-wider mb-1 font-light mt-4'>Quantity</div>
                     <div className='h-12 w-32'>
-                        <QuantityButton quantity={quantity} setQuantity={setQuantity} />
+                        <QuantityButton quantity={quantity} setQuantity={setQuantity} isBig={true} />
                     </div>
                 </div>
 

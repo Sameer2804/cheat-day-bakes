@@ -12,6 +12,13 @@ export async function GET(req) {
     let isAdmin = false;
 
     const url = new URL(req.url);
+    const isDateOnly = url.searchParams.get('dateOnly');
+
+    if(isDateOnly) {
+        const orders = await Order.find({ paid: true, status: { $ne: 'cancelled' } }, 'collectionDateTime');
+        return new Response(JSON.stringify(orders), { headers: { "Content-Type": "application/json" } });
+    }
+
     const _id = url.searchParams.get('_id')
     if(_id){
         return Response.json( await Order.findById(_id) )

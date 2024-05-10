@@ -2,11 +2,49 @@ import { useEffect, useRef, useState } from "react";
 import Right from "@/components/icons/Right"
 import Left from "@/components/icons/Left"
 
-export default function DateTimePicker({selectedDate, setSelectedDate, startDate, setStartDate, initialStartDateRef, setHasTimeBeenSelected}) {
+export default function DateTimePicker({selectedDate, setSelectedDate, startDate, setStartDate, initialStartDateRef, setHasTimeBeenSelected, orders}) {
 
     const [disableLeftArrow, setDisableLeftArrow] = useState(true);
     const [disableRightArrow, setDisableRightArrow] = useState(false);
     const [timeSelected, setTimeSelected] = useState('');
+    const [filteredTimes, setFilteredTimes] = useState([]);
+    const availableTimes = [12, 13, 14]; // Available times
+    let numberOfSquaresToShow = 6;
+
+    useEffect(() => {
+      checkAvailableTimes()
+  }, [selectedDate, orders]);
+
+
+    function checkAvailableTimes() {
+      const selectedDateTime = new Date(selectedDate); // Create a new Date object with the same date as selectedDate
+      selectedDateTime.setHours(0, 0, 0, 0); // Set time to midnight to ignore time component
+  
+      const unavailableTimes = orders
+          .filter(order => {
+              const orderDateTime = new Date(order.collectionDateTime);
+              const orderDateMidnight = new Date(orderDateTime).setHours(0, 0, 0, 0); // Set time of orderDate to midnight
+              return orderDateMidnight === selectedDateTime.getTime();
+          })
+          .map(order => order.collectionDateTime.getHours());
+      
+      setFilteredTimes(availableTimes.filter(time => !unavailableTimes.includes(time)));
+    }
+
+    function checkAvailability(date) {
+      const selectedDateTime = new Date(date); // Create a new Date object with the same date as selectedDate
+      selectedDateTime.setHours(0, 0, 0, 0); // Set time to midnight to ignore time component
+  
+      const unavailableTimes = orders
+          .filter(order => {
+              const orderDateTime = new Date(order.collectionDateTime);
+              const orderDateMidnight = new Date(orderDateTime).setHours(0, 0, 0, 0); // Set time of orderDate to midnight
+              return orderDateMidnight === selectedDateTime.getTime();
+          })
+          .map(order => order.collectionDateTime.getHours());
+      
+      return availableTimes.filter(time => !unavailableTimes.includes(time))
+    }
 
       const generateDateSquares = (startDate, numDays) => {
         const header = [];
@@ -30,32 +68,43 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
           </div>
         );
     
-        // Generate squares for each day
         for (let i = 0; i < numDays; i++) {
           const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
           const dayOfMonth = date.toLocaleDateString("en-GB", { day: "numeric" }); // UK format
           const dayOfWeek = date.toLocaleDateString("en-GB", { weekday: "long" }); // Name of the day
+          const isFullyBooked = checkAvailability(date).length === 0;
+      
+          const squareClasses = `p-2 border text-center flex flex-col justify-center w-full h-20
+            ${(date.getDate()) === (selectedDate.getDate()) && (date.getMonth() === selectedDate.getMonth()) ? 'border-black' : 'border-gray-300'}
+            ${isFullyBooked ? 'bg-gray-300 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-200'}
+          `;
+      
           dateSquares.push(
-            <div key={date.getTime()}
-                 className={`p-2 cursor-pointer hover:bg-gray-200 border text-center flex flex-col justify-center w-full h-20 ${(date.getDate()) === (selectedDate.getDate()) && (date.getMonth() === selectedDate.getMonth()) ? 'border-black' : 'border-gray-300'}`}
-                 onClick={() => {setSelectedDate(date); setHasTimeBeenSelected(false); setTimeSelected('') }}
-                 >
+            <div key={date.getTime()} className={`w-full ${numDays > 3 ? 'w-1/3' : 'w-full'}`}>
+              <div className={squareClasses}
+                onClick={isFullyBooked ? () => {} : () => {setSelectedDate(date); setHasTimeBeenSelected(false); setTimeSelected('') }}
+              >
                 <div className="text-2xl">{dayOfMonth}</div>
                 <div className="text-sm font-light">{dayOfWeek}</div>
+              </div>
+              {isFullyBooked && (
+                <div className="text-xs font-semibold text-center mt-1">Fully Booked</div>
+              )}
             </div>
           );
         }
+      
         return header.concat(
-            <div key="dateSquares" className="flex gap-x-2.5">
-                {dateSquares}
-            </div>
+          <div key="dateSquares" className={`flex md:gap-x-2.5 gap-y-3 md:flex-nowrap md:gap-y-2.5 ${numDays > 3 ? 'flex-wrap' : ''}`}>
+            {dateSquares}
+          </div>
         );
       };
     
       const handleScrollNext = () => {
         setStartDate((prevStartDate) => {
             const newStartDate = new Date(prevStartDate.getTime()); // Copy previous start date
-            newStartDate.setDate(newStartDate.getDate() + 6); // Move start date forward by 6 days
+            newStartDate.setDate(newStartDate.getDate() + numberOfSquaresToShow); // Move start date forward by x days
     
             // Calculate the difference in days from the initial start date
             const daysDifference = Math.floor((newStartDate - initialStartDateRef.current) / (1000 * 60 * 60 * 24));
@@ -78,7 +127,7 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
       const handleScrollBack = () => {
         setStartDate((prevStartDate) => {
           const newStartDate = new Date(prevStartDate.getTime()); // Copy previous start date
-          newStartDate.setDate(newStartDate.getDate() - 6); // Move start date backward by 6 days
+          newStartDate.setDate(newStartDate.getDate() - numberOfSquaresToShow); // Move start date backward by 6 days
           if (newStartDate < initialStartDateRef.current) {
             return prevStartDate; // Return previous if new date is before initial
           }
@@ -94,13 +143,13 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
 
     const convertTo12HourFormat = (hour) => {
         if (hour === 0) {
-            return '12 AM';
+            return '12:00 AM';
         } else if (hour < 12) {
-            return `${hour} AM`;
+            return `${hour}:00 AM`;
         } else if (hour === 12) {
-            return '12 PM';
+            return '12:00 PM';
         } else {
-            return `${hour - 12} PM`;
+            return `${hour - 12}:00 PM`;
         }
     }
     
@@ -129,7 +178,7 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
         <>
             <div>
                 <label htmlFor="collectionDate">Choose Your Collection Date</label>
-                <div className="flex items-center gap-x-3 overflow-x-auto transition-all duration-300">
+                <div className="flex items-center gap-x-3 transition-all duration-300">
                     <div className="mt-10">
                         <button
                         type="button"
@@ -141,7 +190,7 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
                         </button>
                     </div>
                     <div className="grow" >
-                        {generateDateSquares(startDate, 6)}
+                        {generateDateSquares(startDate, numberOfSquaresToShow)}
                     </div>
                     <div className="mt-10">
                         <button
@@ -155,7 +204,7 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
                     </div>
                 </div>
             </div>
-            <div className="mt-5">
+              <div className="mt-5">
                 <label htmlFor="pickUpTime">Choose Your Pick Up Time</label>
                 <select 
                     name="pickUpTime" 
@@ -163,7 +212,6 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
                     value={timeSelected} 
                     onInvalid={(e) => {
                         e.target.setCustomValidity('Please select a time.');
-                        e.target.style.borderColor = 'red'; // Apply red border color
                     }} 
                     onChange={(e) => {
                         setSelectedDate(setHourForSelectedDate(e)); 
@@ -175,9 +223,9 @@ export default function DateTimePicker({selectedDate, setSelectedDate, startDate
                     >
                         
                     <option value="" disabled hidden>Select</option>
-                    <option value={12}>12:00 PM</option>
-                    <option value={13}>1:00 PM</option>
-                    <option value={14}>2:00 PM</option>
+                    {filteredTimes.map(time => (
+                        <option key={time} value={time}>{convertTo12HourFormat(time)}</option>
+                    ))}
                 </select>
             </div>
         </>

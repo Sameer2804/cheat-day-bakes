@@ -5,6 +5,7 @@ import Link from "next/link";
 import Bag from "@/components/icons/Bag"
 import Profile from "@/components/icons/Profile"
 import DropdownButton from "@/components/common/DropdownButton"
+import DropdownButtonMore from "@/components/common/DropdownButtonMore"
 import DropdownIcon from "@/components/common/DropdownIcon"
 import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../AppContext';
@@ -19,7 +20,7 @@ const navigation = [
     { name: 'Cupcakes', href: '/product-list/6610b6e4555875c2afaa2afd', current: false},
     { name: 'Brownies', href: '/product-list/6610b3a2555875c2afaa2ad9', current: false},
     { name: 'Dessert Cups', href: '/product-list/6610bd0c8a3885d3110a5943', current: false},
-    { name: 'All Categories', href: '', current: false},
+    { name: 'All Categories', href: '/product-list/663763607c0a5deda8b70c57', current: false},
     { name: 'More', href: '', current: false, children: [
         { name: 'About Us', href: '/', current: true },
         { name: 'Contact Us', href: '/product-list/6610b6e4555875c2afaa2afd', current: false },
@@ -46,7 +47,8 @@ export default function Header() {
         fetch('/api/categories?findCategoryInUse=true').then(response => {
             response.json().then(categories => {
                 //const categoryNames = categories.map(category => category.name);
-                setCategories(categories);
+                const filteredcategories = categories.filter(categories => categories._id != '663763607c0a5deda8b70c57')
+                setCategories(filteredcategories);
             });
         });
     }, [])
@@ -114,11 +116,15 @@ export default function Header() {
                 </div>
                 <div className="flex max-w-5xl text-lg mx-auto justify-around mt-20">
                     <Link href={'/'} className="hover:underline">HOME</Link>
-                    <Link href={'/product-list/6610b6e4555875c2afaa2afd'} className="hover:underline">CUPCAKES</Link>
-                    <Link href={'/product-list/6610b3a2555875c2afaa2ad9'} className="hover:underline">BROWNIES</Link>
-                    <Link href={'/product-list/6610bd0c8a3885d3110a5943'} className="hover:underline">DESSERT CUPS</Link>
+                    <Link href={'/product-list/663763697c0a5deda8b70c5d'} className="hover:underline">CUPCAKES</Link>
+                    <Link href={'/product-list/663763657c0a5deda8b70c5a'} className="hover:underline">BROWNIES</Link>
+                    <Link href={'/product-list/6637636e7c0a5deda8b70c60'} className="hover:underline">DESSERT CUPS</Link>
                     <DropdownButton text={'ALL CATEGORIES'} options={categories}/>
-                    <DropdownButton text={'MORE'} options={['About Us', 'Contact', 'Refund Policy']}/>
+                    <DropdownButtonMore 
+                        text={'MORE'} 
+                        options={[
+                            {name:'About Us', href: '/'}, {name:'Contact', href: '/'}, {name:'Refund Policy', href: '/'}
+                        ]}/>
                 </div>
             </div>
         </header>

@@ -81,8 +81,10 @@ export default function MenuItemForm({onSubmit, menuItem}) {
             <div>
                 <label htmlFor="category">Category</label>
                 <select id="category" value={category} onChange={e => setCategory(e.target.value)} required>
-                    {categories?.length > 0 && categories.map(category => (
-                        <option value={category._id}>{category.name}</option>
+                {categories?.length > 0 && categories
+                    .filter(category => category._id !== '663763607c0a5deda8b70c57') // Filter out the category named 'All Categories'
+                    .map(category => (
+                        <option key={category._id} value={category._id}>{category.name}</option>
                     ))}
                 </select>
             </div>

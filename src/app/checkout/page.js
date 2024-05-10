@@ -21,6 +21,8 @@ export default function CheckoutPage() {
     const [email, setEmail] = useState(session?.data?.user?.email);
     const pickUpAddress = 'Severnake Close, London, E14 9WE';
     const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);
+    const [orders, setOrders] = useState([])
+    const [orderLoading, setOrderLoading] = useState(true);
 
     const [hasTimeBeenSelected, setHasTimeBeenSelected] = useState(false);
     const [collectionDateTime, setCollectionDateTime] = useState(null);
@@ -37,6 +39,11 @@ export default function CheckoutPage() {
     ];
     const {cartProducts, loading} = useContext(CartContext);
     let total = cartProducts.reduce((totalPrice, product) => totalPrice + cartProductPrice(product), 0).toFixed(2);
+
+    
+    useEffect(() => {
+        fetchOrders();
+      }, [])
 
 
     useEffect(() => {
@@ -72,6 +79,21 @@ export default function CheckoutPage() {
         setDatePickerLoading(false);
       }, [cartProducts]);
 
+      function fetchOrders() {
+        fetch('/api/orders?dateOnly=true')
+            .then(res => res.json())
+            .then(orders => {
+                // Separate orders based on status
+                const formattedOrders = orders.map(order => ({
+                  collectionDateTime: new Date(order.collectionDateTime)
+              }));
+                
+                // Update state with the sorted orders
+                setOrders(formattedOrders);
+            });
+            setOrderLoading(false);
+    }
+
         function findDaysAhead(totalQuantity) {
             // Reverse iterate to find the first matching bracket whose maxQuantity is >= totalQuantity
             for (let i = daysAheadShown.length - 1; i >= 0; i--) {
@@ -85,7 +107,7 @@ export default function CheckoutPage() {
     
 
       if(!loading && cartProducts.length === 0) {
-        return redirect('/cart')
+        return redirect('/')
       }
 
       if(datePickerLoading || profileLoading || loading) {
@@ -117,6 +139,7 @@ export default function CheckoutPage() {
                 window.location = await response.json();
             } else {
                 reject();
+                setHasBeenSubmitted(false);
             }
             });
         });
@@ -124,7 +147,7 @@ export default function CheckoutPage() {
         await toast.promise(promise, {
             loading: 'Preparing your order...',
             success: 'Redirecting to payment...',
-            error: 'Something went wrong... Please try again later',
+            error: 'Something went wrong...',
         })
         setHasBeenSubmitted(false);
  
@@ -177,6 +200,7 @@ export default function CheckoutPage() {
                             setStartDate={setStartDate}
                             initialStartDateRef={initialStartDateRef}
                             setHasTimeBeenSelected={setHasTimeBeenSelected}
+                            orders={orders}
                         />
                     </form>
                 </div>
